@@ -1,0 +1,108 @@
+{
+  "@@locale": "ru",
+
+  "localeCode": "ru",
+  "nativeLocaleName": "Русский",
+
+  "appTitle": "Delivery",
+  "welcome": "Добро пожаловать в Belgi Labs Delivery!",
+  "username": "Имя",
+  "password": "Пароль",
+  "singIn": "Войти",
+  "orders": "Заказы",
+  "profile": "Профиль",
+  "language": "Язык",
+  "notificationSound": "Звук уведомления",
+  "all": "Все",
+  "pending": "В ожидании",
+  "inProgress": "Выполняется",
+  "delivered": "Доставлено",
+  "rejected": "Отклонено",
+  "smthWrongTitle" : "Что-то пошло не так",
+  "smthWrongMessage": "Не удалось выполнить ваш запрос. Пожалуйста попровуйте заново позже.",
+  "refresh": "Обновить",
+  "reject": "Отклонять",
+  "rejectMessage": "Вы действительно хотите отменить этот заказ?",
+  "deliver": "Доставлять",
+  "deliverMessage": "Вы действительно хотите доставлять этот заказ?",
+  "pendingMessage": "Вы действительно хотите отложить этот заказ?",
+  "lock": "Закрывать",
+  "lockMessage": "Вы действительно хотите заблокировать этот заказ?",
+  "cancel": "Отмена",
+  "ok": "OK",
+  "canceled": "Отменено",
+  "shipment": "Возьму сам",
+  "fillBlank": "Заполнить бланк",
+  "incorrectUser": "Имя пользователя или пароль неверны. Пожалуйста, попробуйте еще раз!",
+  "searchFieldHint": "Поиск",
+  "selectVenue": "Выберите ресторан",
+  "show": "Показать",
+  "logOut": "Выйти",
+  "logOutMessage": "Вы уверены, что хотите выйти?",
+  "save": "Сохранить",
+  "ready": "Готово!",
+  "interval": "Интервал",
+  "newOrder": "Новый заказ",
+
+
+
+  "januaryShort": "Jan.",
+  "februaryShort": "Feb.",
+  "marchShort": "March",
+  "aprilShort": "April",
+  "mayShort": "May",
+  "juneShort": "June",
+  "julyShort": "July",
+  "augustShort": "Aug.",
+  "septemberShort": "Sep.",
+  "octoberShort": "Oct.",
+  "novemberShort": "Nov.",
+  "decemberShort": "Dec.",
+  "noName": "Имя не указано",
+  "specialWish" : "Особое пожелание:",
+  "noItemsFound": "Ничего не найдено",
+  "listIsEmpty": "Список пуст",
+
+
+  "@_with_placeholders": "",
+  "placeholdersExample": "first placeholder: {first}, second placeholder: {second}",
+  "@placeholdersExample": {
+    "placeholders": {
+      "first": {
+        "type": "int"
+      },
+      "second": {
+        "type": "int"
+      }
+    }
+  },
+
+  "intervalSeconds": "{seconds} секунд",
+  "@intervalSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+
+  "intervalSecondsShort": "{seconds} сек.",
+  "@intervalSecondsShort": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+
+
+  "@_plurals": "",
+  "pluralExample": "{count,plural, =1{{count} товар} few{{count} товара} many{{count} товаров} other{{count} товаров}}",
+  "@pluralExample": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}
