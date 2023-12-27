@@ -4,6 +4,7 @@ import '../theme.dart';
 
 class FieldText extends StatelessWidget {
   final double? maxHeight;
+  final double? verticalPadding;
   final int? maxLines;
   final String? prefixIcon;
   final bool password;
@@ -25,7 +26,7 @@ class FieldText extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.maxHeight,
-    this.maxLines,
+    this.maxLines, this.verticalPadding,
   });
 
   @override
@@ -39,7 +40,7 @@ class FieldText extends StatelessWidget {
       maxLines: maxLines ?? 1,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+        contentPadding: EdgeInsets.symmetric(horizontal: 22, vertical: verticalPadding ?? 12),
         prefixIcon: prefixIcon != null ? Padding(
           padding: const EdgeInsets.only(left: 22),
           child: Text(prefixIcon!, style: displayMediumText,),

@@ -1,11 +1,51 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../assets.dart';
+import '../../navigation.dart';
+import '../../providers.dart';
 import '../../theme.dart';
+import '../authorization/authorization_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+
+  bool inProgress = false;
+  void updateUi(){
+    setState(() {
+      //no-op
+    });
+  }
+
+  Future<void> onLogOutTap() async{
+    final scope = ProviderScope.containerOf(context, listen: false);
+    final apiClient = scope.read(apiClientProvider);
+    final authController = scope.read(authControllerProvider.notifier);
+    log(authController.authToken.toString());
+    inProgress = true;
+    updateUi();
+    try{
+      await apiClient.logOut(authController.authToken);
+      if(mounted){
+        log('token deleted');
+        await replaceRootScreen(context, const AuthorizationScreen());
+      }
+    } catch(e){
+      if(mounted){
+        showErrorSnackBar(e.toString());
+      }
+    }
+    inProgress = false;
+    updateUi();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,16 +154,23 @@ class ProfileScreen extends StatelessWidget {
             ),
             trailing: AppIcons.chevronDown.svgPicture(),
           ),
-          ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            trailing: AppIcons.chevronDown.svgPicture(),
+          Consumer(
+            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+              final apiClient = ref.read(apiClientProvider);
+              final authController = ref.read(authControllerProvider);
+              return ListTile(
+                onTap: onLogOutTap,
+                leading: const Icon(Icons.outlined_flag_outlined),
+                title: const Text(
+                  'Log Out',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                trailing: AppIcons.chevronDown.svgPicture(),
+              );
+            },
           ),
         ],
       ),
