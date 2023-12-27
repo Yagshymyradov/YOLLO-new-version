@@ -54,6 +54,7 @@ class JsonHttpClient {
       }
       data = response.data;
     } on DioException catch (e) {
+      log(e.toString());
       switch (e.type) {
         case DioExceptionType.badCertificate:
         case DioExceptionType.connectionError:
@@ -76,12 +77,14 @@ class JsonHttpClient {
           throw const NetworkCallCanceledException();
       }
     } catch (e) {
+      log(e.toString());
       throw NetworkIOException(e);
     }
 
     try {
       return mapper(data != null ? jsonDecode(data) : null);
     } catch (e) {
+      log(e.toString());
       throw JsonIOException(e);
     }
   }

@@ -47,6 +47,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
 
     final scope = ProviderScope.containerOf(context, listen: false);
     final apiClient = scope.read(apiClientProvider);
+    final authController = scope.read(authControllerProvider.notifier);
 
     final username = usernameController.text.trim();
     final password = passwordController.text.trim();
@@ -55,10 +56,11 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
     updateUi();
 
     try {
-      await apiClient.signIn(
+      final response = await apiClient.signIn(
         username: username,
         password: password,
       );
+      await authController.onSignedIn(response);
       if(mounted){
         navigateAndRome<Widget>(context, const MainScreen());
       }
@@ -67,10 +69,8 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
       if(mounted){
         final String message;
         if(e is HttpStatusException && e.code == 401){
-          log(e.code.toString());
           message = 'Beyle ulanyjy yok';
         }else{
-          log(e.toString());
           message = 'Bir yalnyslyk bar';
         }
         showErrorSnackBar(message);
@@ -97,7 +97,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
               AppIcons.logo.svgPicture(),
               const SizedBox(height: 46),
               FieldText(
-                validator: (value)=> Validator.phoneValidator(context, value),
+                validator: (value)=> Validator.emptyField(context, value),
                 prefixIcon: '+993',
                 controller: usernameController,
               ),

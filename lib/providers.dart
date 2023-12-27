@@ -1,23 +1,43 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'data/apiClient.dart';
+import 'data/auth_controller.dart';
 import 'data/json_http_client.dart';
+import 'data/service/preferences.dart';
 
-final apiBaseUrlProvider = Provider((ref) => 'https://yollo.com.tm/yolloadmin/api/');
+/// It is an error to use this provider without overriding it's value.
+final appPrefsServiceProvider = Provider<AppPrefsService>(
+      (ref) => throw UnimplementedError("Can't use this provider without overriding it's value."),
+);
+
+final authControllerProvider = StateNotifierProvider<AuthController, UserState?>((ref) {
+  final appPrefs = ref.watch(appPrefsServiceProvider);
+  final initialState = AuthController.initialState(appPrefs);
+  return AuthController(appPrefs, initialState);
+});
 
 final httpClientProvider = Provider(
   (ref) {
     final httpClient = JsonHttpClient();
 
-    // httpClient.dio.interceptors.add(
-    //   InterceptorsWrapper(
-    //     onRequest: (options, handler){
-    //       try{
-    //         final authToken = ref.read(provider)
-    //       } catch(e){}
-    //     }
-    //   ),
-    // );
+    httpClient.dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler){
+          try{
+            final authToken = ref.read(authControllerProvider)?.authToken;
+            if(authToken != null){
+              options.headers[HttpHeaders.authorizationHeader] = 'Bearer $authToken';
+            }
+          } catch(e){
+            //ignored
+          }
+          handler.next(options);
+        },
+      ),
+    );
 
     ref.listen(
       apiBaseUrlProvider,
@@ -32,8 +52,14 @@ final httpClientProvider = Provider(
   },
   dependencies: [
     apiBaseUrlProvider,
+    authControllerProvider,
   ],
 );
+
+final apiBaseUrlProvider = Provider((ref) {
+  // return 'http://216.250.10.237:8003/api/v1/';
+  return 'https://yollo.com.tm/yolloadmin/api/';
+});
 
 final apiClientProvider = Provider(
   (ref) => ApiClient(

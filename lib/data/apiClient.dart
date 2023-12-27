@@ -1,14 +1,23 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+import 'package:yollo/data/response_model.dart';
+
 import 'json_http_client.dart';
 import 'response.dart';
 
 extension Endpoint on Never {
   static const String login = 'user/apilogin/';
 
+  static const String logOut = 'user/apilogout/';
+
   static const String createUser = 'user/createuserapi/';
 
   static const String regionsHi = 'box/regionshi';
 
-  static String regionsCity({String hiRegion = 'Ahal'}) => 'box/regionscity?region_hi=$hiRegion';
+  static const String ordersBox = 'box/boxes';
+
+  static String regionsCity(String hiRegion) => 'box/regionscity?region_hi=$hiRegion';
 }
 
 class ApiClient {
@@ -54,6 +63,13 @@ class ApiClient {
     );
   }
 
+  Future<LoginResponse> logOut(String? accessToken) {
+    return _httpClient.post(
+      Endpoint.logOut,
+      mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
   Future<Regions> getRegionsHi() {
     return _httpClient.get(
       Endpoint.regionsHi,
@@ -63,8 +79,15 @@ class ApiClient {
 
   Future<Regions> getRegionsCity(String hiRegion) {
     return _httpClient.get(
-      Endpoint.regionsCity(hiRegion: hiRegion),
+      Endpoint.regionsCity(hiRegion),
       mapper: (dynamic data) => Regions.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<OrderBox> getOrdersBox() {
+    return _httpClient.get(
+      Endpoint.ordersBox,
+      mapper: (dynamic data) => OrderBox.fromJson(data as Map<String, dynamic>),
     );
   }
 }

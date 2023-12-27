@@ -14,8 +14,8 @@ class AppThemes {
     textTheme: const TextTheme(
       displayMedium: TextStyle(
         color: AppColors.whiteColor,
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
@@ -42,4 +42,5 @@ class AppColors{
   static const greenColorWO = Color.fromRGBO(67, 199, 72, 0.96);
   static const darkColor = Color.fromRGBO(41, 45, 50, 1);
   static const greyColor = Color.fromRGBO(179, 179, 179, 1);
+  static const darkGreyColor = Color.fromRGBO(151, 151, 151, 1);
 }

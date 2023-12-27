@@ -832,6 +832,22 @@ class MaterialLocalizationTk extends GlobalMaterialLocalizations {
 
   @override
   String get viewLicensesButtonLabel => 'Посмотреть лицензии';
+
+  @override
+  // TODO: implement lookUpButtonLabel
+  String get lookUpButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement menuDismissLabel
+  String get menuDismissLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement searchWebButtonLabel
+  String get searchWebButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement shareButtonLabel
+  String get shareButtonLabel => throw UnimplementedError();
 }
 
 /// A custom set of localizations for the 'tk' locale. In this example, only
@@ -1000,4 +1016,20 @@ class CupertinoLocalizationTk extends GlobalCupertinoLocalizations {
 
   @override
   String get noSpellCheckReplacementsLabel => 'noSpellCheckReplacementsLabel';
+
+  @override
+  // TODO: implement lookUpButtonLabel
+  String get lookUpButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement menuDismissLabel
+  String get menuDismissLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement searchWebButtonLabel
+  String get searchWebButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement shareButtonLabel
+  String get shareButtonLabel => throw UnimplementedError();
 }

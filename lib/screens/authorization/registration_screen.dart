@@ -57,12 +57,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     final phone = phoneController.text.trim();
     final password = passwordController.text.trim();
     final address = addressController.text.trim();
+    final authController = scope.read(authControllerProvider.notifier);
 
     inProgress = true;
     updateUi();
 
     try {
-      await apiClient.signUp(
+      final response = await apiClient.signUp(
         password: password,
         name: name,
         phone: phone,
@@ -70,6 +71,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         regionCity: selectedCity!.id,
         address: address,
       );
+      await authController.onSignedIn(response);
       if(mounted){
         navigateAndRome<Widget>(context, const MainScreen());
       }

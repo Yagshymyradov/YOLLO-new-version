@@ -5,6 +5,7 @@ import '../assets.dart';
 import '../navigation.dart';
 import '../theme.dart';
 import '../widgets/tabbed_navigator.dart';
+import 'follow_order_screen/follow_order_screen.dart';
 import 'home_screen/home_screen.dart';
 
 enum TabItem {
@@ -111,7 +112,7 @@ class _MainScreenState extends State<MainScreen> {
         child = const HomeScreen();
         break;
       case TabItem.orders:
-        child = Container();
+        child = const FollowOrderScreen();
         break;
       case TabItem.news:
         child = Container();
