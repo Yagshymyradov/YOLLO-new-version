@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_l10n.dart';
-import 'package:flutter_gen/gen_l10n/app_l10n_en.dart';
 import 'package:flutter_gen/gen_l10n/app_l10n_ru.dart';
 import 'package:flutter_gen/gen_l10n/app_l10n_tk.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,13 +10,14 @@ import 'tk_intl.dart';
 
 export 'package:flutter_gen/gen_l10n/app_l10n.dart';
 
-const String LocaleCodeRussian = 'ru';
+const String
+LocaleCodeRussian = 'ru';
 const String LocaleCodeTurkmen = 'tk';
-const String LocaleCodeEnglish = 'en';
+// const String LocaleCodeEnglish = 'en';
 
 const Locale LocaleRussian = Locale(LocaleCodeRussian);
 const Locale LocaleTurkmen = Locale(LocaleCodeTurkmen);
-const Locale LocaleEnglish = Locale(LocaleCodeEnglish);
+// const Locale LocaleEnglish = Locale(LocaleCodeEnglish);
 
 const Locale FallbackLocale = LocaleRussian;
 
@@ -89,29 +89,14 @@ extension AppLocalizationsX on AppLocalizations {
     }
   }
 
-  // String orderStatusTitle(OrderStatus status) {
-  //   switch(status) {
-  //     case OrderStatus.pending:
-  //       return pending;
-  //     case OrderStatus.inProgress:
-  //       return inProgress;
-  //     case OrderStatus.delivered:
-  //       return delivered;
-  //     case OrderStatus.rejected:
-  //       return rejected;
-  //     case OrderStatus.returned:
-  //       return rejected;
-  //   }
-  // }
-
   static String getLocaleName(Locale locale) {
     switch (locale.languageCode) {
       case LocaleCodeRussian:
         return AppLocalizationsRu().nativeLocaleName;
       case LocaleCodeTurkmen:
         return AppLocalizationsTk().nativeLocaleName;
-      case LocaleCodeEnglish:
-        return AppLocalizationsEn().nativeLocaleName;
+      // case LocaleCodeEnglish:
+      //   return AppLocalizationsEn().nativeLocaleName;
     }
 
     assert(false, 'unsupported locale "$locale"');

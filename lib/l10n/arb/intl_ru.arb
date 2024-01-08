@@ -34,7 +34,7 @@
   "callTaxi": "Позвоните водителю",
   "autoCompleteOrder": "Автоматическое заполнение заказа",
   "sendCargo": "Ýüki Ýollo",
-  "complete": "Заполните заказ вручную",
+  "completeOrder": "Заполните заказ вручную",
   "sender": "Отправитель",
   "aboutProduct": "Вес, размер в сантиметрах, описание товара.",
   "price": "Цена",
@@ -48,7 +48,7 @@
   "kg": "Кг",
   "m3": "м3",
   "status": "Статус",
-
+  "username": "Имя",
   "volume": "Объем",
   "recipient": "Получатель",
   "saveIt": "Сохранить",
@@ -70,6 +70,17 @@
   "chooseCity": "Выберите город",
   "operatorsWillCall" : "Операторы свяжутся с вами в ближайшее время",
   "justNow" : "Сейчас",
+  "fillBlank": "Заполните бланк",
+  "language": "Язык",
+  "incorrectUser": "Имя пользователя или пароль неверны",
+  "loadsToBeDistributed" : "Нагрузки, \nподлежащие распределению",
+  "refresh": "Обновить",
+  "noProducts": "В настоящее время нет доступных загрузок",
+  "orderChanged": "Заказ изменен",
+  "commentOfDriver": "Водитель должен написать причину",
+  "rejected": "Отказано",
+  "delivered": "Завершено",
+
 
 
   "januaryShort": "Jan.",
