@@ -1,11 +1,9 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:ui';
-
 import 'package:state_notifier/state_notifier.dart';
-
-import '../l10n/l10n.dart' as l10n show FallbackLocale, toSupportedLocaleByCode;
-import 'service/preferences.dart';
+import '../../l10n/l10n.dart' as l10n show FallbackLocale, toSupportedLocaleByCode;
+import 'preferences.dart';
 
 class AppSettings {
   final Locale locale;

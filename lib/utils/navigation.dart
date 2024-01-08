@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yollo/theme.dart';
+import 'package:yollo/utils/theme.dart';
 
 /// Root Navigator key
 final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -32,7 +32,7 @@ Future<T?> replaceRootScreen<T extends Object?>(BuildContext context, Widget scr
     MaterialPageRouteWithBarrier<T?>(
       builder: (context) => screen,
     ),
-        (route) => false,
+    (route) => false,
   );
 }
 
@@ -63,15 +63,19 @@ void navigateAndRome<T>(BuildContext context, Widget widget) {
 }
 
 void showErrorSnackBar(String message, {SnackBarAction? action}) {
-  showSnackBar(message, action: action, backgroundColor: AppColors.greyColor);
+  showSnackBar(
+    message,
+    action: action,
+    backgroundColor: AppColors.redColor,
+  );
 }
 
 void showSnackBar(
-    String message, {
-      SnackBarAction? action,
-      Color? backgroundColor,
-      EdgeInsetsGeometry? margin,
-    }) {
+  String message, {
+  SnackBarAction? action,
+  Color? backgroundColor,
+  EdgeInsetsGeometry? margin,
+}) {
   final scaffoldMessenger = scaffoldMessengerKey.currentState;
   if (scaffoldMessenger == null) {
     assert(false, 'ScaffoldMessenger not initiated');
@@ -84,7 +88,9 @@ void showSnackBar(
     ..showSnackBar(
       SnackBar(
         elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
         margin: margin,
         backgroundColor: backgroundColor,
         behavior: SnackBarBehavior.floating,
@@ -96,10 +102,7 @@ void showSnackBar(
             ),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(
-                 message,
-                // color: AppColors.whiteColor,
-              ),
+              child: Text(message, style: AppThemes.darkTheme.textTheme.bodyMedium,),
             ),
           ],
         ),

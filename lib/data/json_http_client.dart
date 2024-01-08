@@ -83,8 +83,9 @@ class JsonHttpClient {
 
     try {
       return mapper(data != null ? jsonDecode(data) : null);
-    } catch (e) {
+    } catch (e, s) {
       log(e.toString());
+      log(s.toString());
       throw JsonIOException(e);
     }
   }
@@ -149,8 +150,9 @@ class JsonHttpClient {
 
     try {
       return mapper(needDecodeBody && data != null ? jsonDecode(data) : null);
-    } catch (e) {
+    } catch (e, s) {
       log(e.toString());
+      log(s.toString());
       throw JsonIOException(e);
     }
   }

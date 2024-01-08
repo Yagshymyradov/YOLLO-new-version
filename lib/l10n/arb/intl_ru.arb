@@ -80,8 +80,11 @@
   "commentOfDriver": "Водитель должен написать причину",
   "rejected": "Отказано",
   "delivered": "Завершено",
-
-
+  "created": "Создан",
+  "called": "Позвонен",
+  "confirmed": "Подтвержден",
+  "accepted": "Принят",
+  "completed": "Завершен",
 
   "januaryShort": "Jan.",
   "februaryShort": "Feb.",

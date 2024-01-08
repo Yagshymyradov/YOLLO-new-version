@@ -10,6 +10,16 @@ class AppThemes {
       elevation: 0,
     ),
     textTheme: const TextTheme(
+      displayLarge: TextStyle(
+        color: AppColors.whiteColor,
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+      ),
+      titleMedium: TextStyle(
+        color: AppColors.whiteColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
       displayMedium: TextStyle(
         color: AppColors.whiteColor,
         fontSize: 15,
@@ -19,6 +29,17 @@ class AppThemes {
         color: AppColors.whiteColor,
         fontSize: 14,
         fontWeight: FontWeight.w700,
+      ),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      checkColor: const MaterialStatePropertyAll(AppColors.whiteColor),
+      fillColor: const MaterialStatePropertyAll(Colors.transparent),
+      // activeColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      side: MaterialStateBorderSide.resolveWith(
+            (states) => const BorderSide(color: AppColors.whiteColor),
       ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(

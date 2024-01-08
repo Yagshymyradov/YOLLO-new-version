@@ -1,9 +1,14 @@
-import 'package:equatable/equatable.dart';
+import 'dart:io';
+
 import 'package:json_annotation/json_annotation.dart';
+
+import '../utils/enums.dart';
 
 part 'response.g.dart';
 
-double _priceFromJson(num value) => value.toDouble();
+double? _priceFromJson(String? value) => double.tryParse(value ?? '');
+
+// double _priceFromJson(num value) => value.toDouble();
 
 bool _intBoolFromJson(int value) => value == 1;
 
@@ -46,6 +51,18 @@ class User {
 }
 
 @JsonSerializable()
+class RefreshTokenResponse {
+  final String access;
+
+  RefreshTokenResponse({
+    required this.access,
+  });
+
+  factory RefreshTokenResponse.fromJson(Map<String, dynamic> json) =>
+      _$RefreshTokenResponseFromJson(json);
+}
+
+@JsonSerializable()
 class Address {
   final String address;
   final String regionName;
@@ -76,7 +93,7 @@ class Regions {
 }
 
 @JsonSerializable()
-class RegionResults with EquatableMixin {
+class RegionResults {
   final int id;
   final String name;
   final String tarif;
@@ -90,22 +107,32 @@ class RegionResults with EquatableMixin {
   });
 
   factory RegionResults.fromJson(Map<String, dynamic> json) => _$RegionResultsFromJson(json);
+}
 
-  @override
-  List<Object?> get props => [id, name, tarif, hiRegion];
+@JsonSerializable()
+class OrderDetails {
+  final OrderBox box;
+  final List<OrderHistory>? history;
+
+  OrderDetails({
+    required this.box,
+    required this.history,
+  });
+
+  factory OrderDetails.fromJson(Map<String, dynamic> json) => _$OrderDetailsFromJson(json);
+}
+
+@JsonSerializable()
+class OrderData {
+  final List<OrderBox> boxes;
+
+  OrderData({required this.boxes});
+
+  factory OrderData.fromJson(Map<String, dynamic> json) => _$OrderDataFromJson(json);
 }
 
 @JsonSerializable()
 class OrderBox {
-  final List<Boxes> boxes;
-
-  OrderBox({required this.boxes});
-
-  factory OrderBox.fromJson(Map<String, dynamic> json) => _$OrderBoxFromJson(json);
-}
-
-@JsonSerializable()
-class Boxes {
   final int? id;
   @JsonKey(name: 'clientfrom')
   final String? clientFrom;
@@ -119,7 +146,10 @@ class Boxes {
   final String? addressFrom;
   @JsonKey(name: 'addressto')
   final String? addressTo;
-  final String? amount;
+  @JsonKey(fromJson: _priceFromJson)
+  final double? tarif;
+  @JsonKey(fromJson: _priceFromJson)
+  final double? amount;
   final String? weight;
   @JsonKey(name: 'volumesm')
   final String? volumeSm;
@@ -128,9 +158,10 @@ class Boxes {
   final String? minSm;
   @JsonKey(name: 'maxsm')
   final String? maxSm;
-  @JsonKey(name: 'placeount')
+  @JsonKey(name: 'placecount')
   final int? placeCount;
-  final String? discount;
+  @JsonKey(name: 'disCount')
+  final String? disCount;
   final String? valuta;
   final String? status;
   final String? comment;
@@ -140,15 +171,19 @@ class Boxes {
   final String? boxImg;
   @JsonKey(name: 'regionfrom__name')
   final String? regionFromName;
+  @JsonKey(name: 'regionfrom')
+  final int? regionFrom;
+  @JsonKey(name: 'regionto')
+  final int? regionTo;
   @JsonKey(name: 'regionto__name')
   final String? regionToName;
-  @JsonKey(name: 'inputdate', fromJson: _dateTimeFromJson)
+  @JsonKey(name: 'inputdate')
   final DateTime? inputDate;
-  @JsonKey(name: 'updatedate', fromJson: _dateTimeFromJson)
+  @JsonKey(name: 'updatedate')
   final DateTime? updateDate;
   final int? user;
 
-  Boxes({
+  OrderBox({
     required this.id,
     required this.clientFrom,
     required this.clientTo,
@@ -156,6 +191,7 @@ class Boxes {
     required this.phoneTo,
     required this.addressFrom,
     required this.addressTo,
+    required this.tarif,
     required this.amount,
     required this.weight,
     required this.volumeSm,
@@ -163,7 +199,7 @@ class Boxes {
     required this.minSm,
     required this.maxSm,
     required this.placeCount,
-    required this.discount,
+    required this.disCount,
     required this.valuta,
     required this.status,
     required this.comment,
@@ -175,7 +211,100 @@ class Boxes {
     required this.inputDate,
     required this.updateDate,
     required this.user,
+    required this.regionFrom,
+    required this.regionTo,
   });
 
-  factory Boxes.fromJson(Map<String, dynamic> json) => _$BoxesFromJson(json);
+  factory OrderBox.fromJson(Map<String, dynamic> json) => _$OrderBoxFromJson(json);
+}
+
+@JsonSerializable()
+class OrderHistory {
+  final int? boxId;
+  final DateTime? inputDate;
+  final String? regionbhName;
+  final String? status;
+
+  OrderHistory({
+    required this.boxId,
+    required this.inputDate,
+    required this.regionbhName,
+    required this.status,
+  });
+
+  factory OrderHistory.fromJson(Map<String, dynamic> json) => _$OrderHistoryFromJson(json);
+}
+
+@JsonSerializable(createToJson: true)
+class CreateOrderBox {
+  @JsonKey(name: 'clientfrom')
+  final String? clientFrom;
+  @JsonKey(name: 'clientto')
+  final String? clientTo;
+  @JsonKey(name: 'phonefrom')
+  final String? phoneFrom;
+  @JsonKey(name: 'phoneto')
+  final String? phoneTo;
+  @JsonKey(name: 'addressfrom')
+  final String? addressFrom;
+  @JsonKey(name: 'addressto')
+  final String? addressTo;
+  final String? tarif;
+  final String? amount;
+  final String? weight;
+  @JsonKey(name: 'weightmax')
+  final String? weightMax;
+  @JsonKey(name: 'placecount')
+  final int? placeCount;
+  final String? discount;
+  final Currency? valuta;
+  final OrderStatus? status;
+  final String? comment;
+  final String? payment;
+  @JsonKey(name: 'regionfrom')
+  final String? regionFrom;
+  @JsonKey(name: 'regionto')
+  final String? regionTo;
+  @JsonKey(name: 'minsm')
+  final String? minSm;
+  @JsonKey(name: 'volumesm')
+  final String? volumeSm;
+  @JsonKey(name: 'maxsm')
+  final String? maxSm;
+  final String? delivery;
+  @JsonKey(ignore: true)
+  final String? img;
+  @JsonKey(ignore: true)
+  final File? file;
+
+  CreateOrderBox({
+    required this.clientFrom,
+    required this.clientTo,
+    required this.phoneFrom,
+    required this.phoneTo,
+    required this.addressFrom,
+    required this.addressTo,
+    required this.tarif,
+    required this.amount,
+    required this.weight,
+    required this.placeCount,
+    required this.valuta,
+    required this.status,
+    required this.comment,
+    required this.payment,
+    required this.regionFrom,
+    required this.regionTo,
+    this.img,
+    this.file,
+    required this.discount,
+    required this.volumeSm,
+    required this.weightMax,
+    required this.minSm,
+    required this.maxSm,
+    required this.delivery,
+  });
+
+  factory CreateOrderBox.fromJson(Map<String, dynamic> json) => _$CreateOrderBoxFromJson(json);
+
+  Map<String, dynamic> toJson() => _$CreateOrderBoxToJson(this);
 }

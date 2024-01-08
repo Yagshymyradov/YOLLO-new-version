@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:yollo/screens/profile_screen/profile_screen.dart';
 
-import '../assets.dart';
-import '../navigation.dart';
-import '../theme.dart';
+import '../utils/assets.dart';
+import '../utils/navigation.dart';
+import '../utils/theme.dart';
 import '../widgets/tabbed_navigator.dart';
 import 'follow_order_screen/follow_order_screen.dart';
 import 'home_screen/home_screen.dart';
+import 'profile_screen/profile_screen.dart';
 
 enum TabItem {
   home,
@@ -183,8 +183,10 @@ class BottomNavigation extends StatelessWidget {
 
     return DecoratedBox(
       decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: AppColors.greyColor)),
-          color: AppColors.backgroundColor,
+        border: Border(
+          top: BorderSide(color: AppColors.greyColor),
+        ),
+        color: AppColors.backgroundColor,
       ),
       child: ConstrainedBox(
         constraints: BoxConstraints(
@@ -196,7 +198,11 @@ class BottomNavigation extends StatelessWidget {
             context: context,
             removeBottom: true,
             child: Row(
-              children: tabItems.map((child) => Expanded(child: child)).toList(growable: false),
+              children: tabItems
+                  .map(
+                    (child) => Expanded(child: child),
+                  )
+                  .toList(growable: false),
             ),
           ),
         ),

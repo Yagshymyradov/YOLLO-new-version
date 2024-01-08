@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'data/service/preferences.dart';
 import 'l10n/l10n.dart' as l10n;
-import 'navigation.dart' as nav;
 import 'providers.dart';
 import 'screens/splash_screen.dart';
-import 'theme.dart';
+import 'utils/navigation.dart' as nav;
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

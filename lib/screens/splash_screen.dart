@@ -1,14 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../assets.dart';
-import '../navigation.dart';
 import '../providers.dart';
-import '../theme.dart';
+import '../utils/assets.dart';
+import '../utils/navigation.dart';
+import '../utils/theme.dart';
 import 'authorization/authorization_screen.dart';
 import 'main_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 

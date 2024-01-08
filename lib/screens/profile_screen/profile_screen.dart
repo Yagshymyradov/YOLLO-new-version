@@ -3,10 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../assets.dart';
-import '../../navigation.dart';
 import '../../providers.dart';
-import '../../theme.dart';
+import '../../utils/assets.dart';
+import '../../utils/navigation.dart';
+import '../../utils/theme.dart';
 import '../authorization/authorization_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,35 +17,36 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
   bool inProgress = false;
-  void updateUi(){
+
+  void updateUi() {
     setState(() {
       //no-op
     });
   }
 
-  Future<void> onLogOutTap() async{
+  Future<void> onLogOutTap() async {
     final scope = ProviderScope.containerOf(context, listen: false);
     final apiClient = scope.read(apiClientProvider);
     final authController = scope.read(authControllerProvider.notifier);
     log(authController.authToken.toString());
     inProgress = true;
     updateUi();
-    try{
+    try {
       await apiClient.logOut(authController.authToken);
-      if(mounted){
+      if (mounted) {
         log('token deleted');
         await replaceRootScreen(context, const AuthorizationScreen());
       }
-    } catch(e){
-      if(mounted){
+    } catch (e) {
+      if (mounted) {
         showErrorSnackBar(e.toString());
       }
     }
     inProgress = false;
     updateUi();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,14 +67,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const Center(
             child: Text(
               'Plany Planyyew',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           const SizedBox(height: 10),
           const Center(
             child: Text(
               '+99365112233',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w100),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w100,
+              ),
             ),
           ),
           const SizedBox(height: 10),
@@ -155,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             trailing: AppIcons.chevronDown.svgPicture(),
           ),
           Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) {
+            builder: (context, ref, child) {
               final apiClient = ref.read(apiClientProvider);
               final authController = ref.read(authControllerProvider);
               return ListTile(

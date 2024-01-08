@@ -1,21 +1,23 @@
+import 'dart:developer';
 import 'dart:io';
-
-import 'package:dio/dio.dart';
-import 'package:yollo/data/response_model.dart';
 
 import 'json_http_client.dart';
 import 'response.dart';
 
-extension Endpoint on Never {
+extension Endpoints on Never {
   static const String login = 'user/apilogin/';
 
   static const String logOut = 'user/apilogout/';
+
+  static const String refreshToken = 'token/refresh/';
 
   static const String createUser = 'user/createuserapi/';
 
   static const String regionsHi = 'box/regionshi';
 
   static const String ordersBox = 'box/boxes';
+
+  static String ordersBoxById(int id) => 'box/boxes/$id';
 
   static String regionsCity(String hiRegion) => 'box/regionscity?region_hi=$hiRegion';
 }
@@ -25,7 +27,7 @@ class ApiClient {
 
   ApiClient(this._httpClient);
 
-  Future<LoginResponse> signIn({
+  Future<LoginResponse> login({
     required String username,
     required String password,
   }) {
@@ -34,12 +36,15 @@ class ApiClient {
       'password': password,
     };
     return _httpClient.post(
-      Endpoint.login,
+      Endpoints.login,
       body: postData,
-      mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
+      mapper: (dynamic data) {
+        return LoginResponse.fromJson(data as Map<String, dynamic>);
+      },
     );
   }
 
+  //TODO: DO IT WITH CORRECT WAY
   Future<LoginResponse> signUp({
     required String password,
     required String name,
@@ -57,37 +62,66 @@ class ApiClient {
       'address': address,
     };
     return _httpClient.post(
-      Endpoint.createUser,
+      Endpoints.createUser,
       body: postData,
       mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
     );
   }
 
+  Future<RefreshTokenResponse> refreshToken(String token) async {
+    return _httpClient.post(
+      Endpoints.refreshToken,
+      body: <String, dynamic>{
+        'refresh': token,
+      },
+      mapper: (dynamic data) => RefreshTokenResponse.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
   Future<LoginResponse> logOut(String? accessToken) {
     return _httpClient.post(
-      Endpoint.logOut,
+      Endpoints.logOut,
       mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
     );
   }
 
   Future<Regions> getRegionsHi() {
     return _httpClient.get(
-      Endpoint.regionsHi,
+      Endpoints.regionsHi,
       mapper: (dynamic data) => Regions.fromJson(data as Map<String, dynamic>),
     );
   }
 
   Future<Regions> getRegionsCity(String hiRegion) {
     return _httpClient.get(
-      Endpoint.regionsCity(hiRegion),
+      Endpoints.regionsCity(hiRegion),
       mapper: (dynamic data) => Regions.fromJson(data as Map<String, dynamic>),
     );
   }
 
-  Future<OrderBox> getOrdersBox() {
+  Future<OrderData> getOrdersBox() {
     return _httpClient.get(
-      Endpoint.ordersBox,
-      mapper: (dynamic data) => OrderBox.fromJson(data as Map<String, dynamic>),
+      Endpoints.ordersBox,
+      mapper: (dynamic data) => OrderData.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<OrderDetails> getOrdersBoxById(int id) {
+    return _httpClient.get(
+      Endpoints.ordersBoxById(id),
+      mapper: (dynamic data) => OrderDetails.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<CreateOrderBox> createOrderBox({
+    required CreateOrderBox createOrderBox,
+    String? img,
+    File? file,
+  }) async {
+    return _httpClient.post(
+      Endpoints.ordersBox,
+      body: createOrderBox.toJson(),
+      mapper: (dynamic data) => CreateOrderBox.fromJson(data as Map<String, dynamic>),
     );
   }
 }

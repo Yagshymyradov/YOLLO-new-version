@@ -1,15 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../assets.dart';
 import '../../components/field_text.dart';
 import '../../data/exceptions.dart';
-import '../../extensions.dart';
-import '../../navigation.dart';
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
-import '../../theme.dart';
+import '../../utils/assets.dart';
+import '../../utils/extensions.dart';
+import '../../utils/navigation.dart';
+import '../../utils/theme.dart';
 import '../../utils/validators.dart';
 import '../main_screen.dart';
 import 'forgot_password_screen.dart';
@@ -56,22 +57,23 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
     updateUi();
 
     try {
-      final response = await apiClient.signIn(
+      final response = await apiClient.login(
         username: username,
         password: password,
       );
       await authController.onSignedIn(response);
-      if(mounted){
+      if (mounted) {
         navigateAndRome<Widget>(context, const MainScreen());
       }
     } catch (e) {
-      log(e.toString());
-      if(mounted){
+      if (mounted) {
         final String message;
-        if(e is HttpStatusException && e.code == 401){
-          message = 'Beyle ulanyjy yok';
-        }else{
-          message = 'Bir yalnyslyk bar';
+        final l10n = context.l10n;
+        log(e.toString());
+        if (e is JsonIOException) {
+          message = l10n.incorrectUser;
+        } else {
+          message = l10n.hasErrorPleaseReaped;
         }
         showErrorSnackBar(message);
       }
@@ -80,12 +82,15 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
     updateUi();
   }
 
-
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Içeri gir'),
+        title: Text(
+          l10n.login,
+          style: AppThemes.darkTheme.textTheme.titleMedium,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
@@ -97,44 +102,49 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
               AppIcons.logo.svgPicture(),
               const SizedBox(height: 46),
               FieldText(
-                validator: (value)=> Validator.emptyField(context, value),
+                validator: (value) => Validator.phoneValidator(context, value),
                 prefixIcon: '+993',
+                hintText: '61233377',
                 controller: usernameController,
+                keyboardType: TextInputType.phone,
+                inputFormatters: [LengthLimitingTextInputFormatter(8)],
               ),
               const SizedBox(height: 20),
               FieldText(
-                validator: (value)=> Validator.emptyField(context, value),
-                hintText: 'Acar sozi',
+                validator: (value) => Validator.emptyField(context, value),
+                hintText: l10n.password,
                 controller: passwordController,
               ),
               const SizedBox(height: 55),
               ElevatedButton(
                 onPressed: inProgress ? null : onSignInTap,
                 style: AppThemes.darkTheme.elevatedButtonTheme.style,
-                child: inProgress ? const CircularProgressIndicator() : const Text(
-                  'Iceri gir',
-                  style: TextStyle(fontSize: 18),
-                ),
+                child: inProgress
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        l10n.login,
+                        style: AppThemes.darkTheme.textTheme.displayLarge,
+                      ),
               ),
               const SizedBox(height: 85),
               TextButton(
-                onPressed: () => navigateTo<Widget>(context, const RegistrationScreen()),
-                child: const Text(
-                  'registrasiya',
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 18,
-                  ),
+                onPressed: () => navigateTo<Widget>(
+                  context,
+                  const RegistrationScreen(),
+                ),
+                child: Text(
+                  l10n.registration,
+                  style: AppThemes.darkTheme.textTheme.displayLarge,
                 ),
               ),
               TextButton(
-                onPressed: () => navigateTo<Widget>(context, const ForgotPasswordScreen()),
-                child: const Text(
-                  'acar sozuni unutdym',
-                  style: TextStyle(
-                    color: AppColors.whiteColor,
-                    fontSize: 18,
-                  ),
+                onPressed: () => navigateTo<Widget>(
+                  context,
+                  const ForgotPasswordScreen(),
+                ),
+                child: Text(
+                  l10n.forgotPassword,
+                  style: AppThemes.darkTheme.textTheme.displayLarge,
                 ),
               ),
             ],

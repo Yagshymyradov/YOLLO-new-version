@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-import '../theme.dart';
+import '../utils/theme.dart';
 
 class FieldText extends StatelessWidget {
   final double? maxHeight;
@@ -14,6 +15,9 @@ class FieldText extends StatelessWidget {
   final bool obscureText;
   final VoidCallback? onTogglePasscodeVisibilityTap;
   final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final String? initialValue;
+  final List<TextInputFormatter>? inputFormatters;
 
   const FieldText({
     super.key,
@@ -26,25 +30,40 @@ class FieldText extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.maxHeight,
-    this.maxLines, this.verticalPadding,
+    this.maxLines,
+    this.verticalPadding,
+    this.keyboardType,
+    this.initialValue,
+    this.inputFormatters,
   });
 
   @override
   Widget build(BuildContext context) {
-    final displayMediumText = AppThemes.darkTheme.textTheme.displayMedium;
+    final displayMediumText = AppThemes.darkTheme.textTheme.bodyMedium;
     return TextFormField(
+      keyboardType: keyboardType,
       validator: validator,
       obscureText: obscureText,
       controller: controller,
       style: displayMediumText,
       maxLines: maxLines ?? 1,
+      initialValue: initialValue,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 22, vertical: verticalPadding ?? 12),
-        prefixIcon: prefixIcon != null ? Padding(
-          padding: const EdgeInsets.only(left: 22),
-          child: Text(prefixIcon!, style: displayMediumText,),
-        ) : null,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 22,
+          vertical: verticalPadding ?? 12,
+        ),
+        prefixIcon: prefixIcon != null
+            ? Padding(
+                padding: const EdgeInsets.only(left: 22),
+                child: Text(
+                  prefixIcon!,
+                  style: displayMediumText,
+                ),
+              )
+            : null,
         prefixIconConstraints: const BoxConstraints(minHeight: 0),
         hintText: hintText,
         labelText: labelText,
@@ -78,11 +97,19 @@ class FieldText extends StatelessWidget {
             );
           },
         ),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(23),
-          borderSide: const BorderSide(color: AppColors.whiteColor),
-        ),
+        errorStyle: const TextStyle(color: AppColors.redColor),
+        border: buildOutlineInputBorder(AppColors.whiteColor),
+        focusedBorder: buildOutlineInputBorder(AppColors.blueColor),
+        focusedErrorBorder: buildOutlineInputBorder(AppColors.redColor),
+        errorBorder: buildOutlineInputBorder(AppColors.redColor),
       ),
+    );
+  }
+
+  OutlineInputBorder buildOutlineInputBorder(Color color) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(23),
+      borderSide: BorderSide(color: color),
     );
   }
 }

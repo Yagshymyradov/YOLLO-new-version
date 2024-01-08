@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../assets.dart';
 import '../../components/field_text.dart';
-import '../../navigation.dart';
-import '../../theme.dart';
+import '../../utils/assets.dart';
+import '../../utils/navigation.dart';
+import '../../utils/theme.dart';
 import 'registration_screen.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
@@ -53,7 +53,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(23),
                     ),
                   ),
-                  minimumSize: MaterialStateProperty.all(const Size(double.infinity, 46)),
+                  minimumSize: MaterialStateProperty.all(
+                    const Size(double.infinity, 46),
+                  ),
                 ),
                 child: const Text(
                   'Iceri gir',
@@ -62,7 +64,10 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
               const SizedBox(height: 85),
               TextButton(
-                onPressed: () => navigateTo<Widget>(context, const RegistrationScreen()),
+                onPressed: () => navigateTo<Widget>(
+                  context,
+                  const RegistrationScreen(),
+                ),
                 child: const Text(
                   'registrasiya',
                   style: TextStyle(

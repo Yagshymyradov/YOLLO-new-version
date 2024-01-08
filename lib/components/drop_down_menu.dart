@@ -1,20 +1,22 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
-import '../assets.dart';
-import '../theme.dart';
+import '../utils/assets.dart';
+import '../utils/theme.dart';
 
 class DropDownMenu<T> extends StatelessWidget {
   DropDownMenu({
     Key? key,
     required this.value,
     required this.values,
-    this.fontSize = 17,
+    this.fontSize = 14,
     this.isLoading = false,
     this.onChanged,
     required this.hint,
     this.items,
     required this.children,
     this.validator,
+    this.borderColor = AppColors.whiteColor,
   }) : super(key: key);
   late T value;
   final List<T>? values;
@@ -24,47 +26,51 @@ class DropDownMenu<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>>? children;
   void Function(T?)? onChanged;
   final String hint;
+  final Color borderColor;
   final String? Function(T?)? validator;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // height: 50,
-      child: ButtonTheme(
-        alignedDropdown: true,
-        child: DropdownButtonFormField<T>(
+    return ButtonTheme(
+      alignedDropdown: true,
+      child: DropdownButtonHideUnderline(
+        child: DropdownButtonFormField2<T>(
           isExpanded: true,
-          validator: validator,
-          dropdownColor: Colors.black87,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: fontSize,
+          buttonStyleData: ButtonStyleData(
+            padding: const EdgeInsets.only(right: 15),
+            height: 42,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: borderColor,
+              ),
+              borderRadius: BorderRadius.circular(23),
+            ),
           ),
-          icon: AppIcons.chevronDown.svgPicture(),
-          // selectedItemBuilder: ,
-          borderRadius: BorderRadius.circular(20),
-          decoration: InputDecoration(
-            constraints: const BoxConstraints(maxHeight: 45),
-            suffixIcon: isLoading
+          iconStyleData: IconStyleData(
+            icon: isLoading
                 ? const Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: EdgeInsets.symmetric(vertical: 8),
                     child: CircularProgressIndicator.adaptive(strokeWidth: 1.8),
                   )
-                : null,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(23)),
-            enabledBorder: _border(AppColors.whiteColor),
-            // errorBorder: _border(Colors.red),
-            // errorText: 'Bos bolp bilmez',
+                : AppIcons.chevronDown.svgPicture(),
+          ),
+          decoration: const InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 5),
+            border: InputBorder.none,
+            errorStyle: TextStyle(color: AppColors.redColor),
+          ),
+          validator: validator,
+          // dropdownColor: Colors.black87,
+          style: TextStyle(
+            fontWeight: FontWeight.w300,
+            fontSize: fontSize,
           ),
           selectedItemBuilder: (context) {
             return List.generate(
               items?.length ?? 0,
               (index) => Text(
                 items?[index] ?? '',
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+                style: const TextStyle(color: Colors.white),
               ),
             );
           },
@@ -85,10 +91,7 @@ class DropDownMenu<T> extends StatelessWidget {
   OutlineInputBorder _border(Color color) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(23),
-      borderSide: BorderSide(
-        color: color,
-        width: 0.3,
-      ),
+      borderSide: BorderSide.none,
     );
   }
 }

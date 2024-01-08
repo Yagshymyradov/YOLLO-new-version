@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../assets.dart';
-import '../../navigation.dart';
-import '../../theme.dart';
+import '../../utils/assets.dart';
+import '../../utils/navigation.dart';
+import '../../utils/theme.dart';
 import 'create_order.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -29,17 +29,26 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Text(
                       'YOLLO',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     SizedBox(height: 20),
                     Text(
                       'welayatara we Ashgabat shaher ichi eltip bermek hyzmatyny yerine yetiryan hyzmat bolup duryar',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     SizedBox(height: 20),
                     Text(
                       'Ish wagty: 09:00 - 18:00',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ],
                 ),
@@ -52,7 +61,10 @@ class HomeScreen extends StatelessWidget {
                   side: const BorderSide(color: AppColors.whiteColor),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 title: const Text(
                   'Sürüjini çagyr',
                   style: TextStyle(
@@ -77,7 +89,10 @@ class HomeScreen extends StatelessWidget {
                   side: const BorderSide(color: AppColors.whiteColor),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 10,
+                ),
                 title: const Text(
                   'Ýüki Ýollo',
                   style: TextStyle(

@@ -5,6 +5,7 @@ enum AppIcons {
   add('add'),
   logo('yolloLogo'),
   chevronDown('chevronDown'),
+  arrowRight('arrowRight'),
   truck('truck'),
   person('person'),
   home('home'),

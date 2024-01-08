@@ -1,15 +1,16 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/drop_down_menu.dart';
 import '../../components/field_text.dart';
 import '../../data/response.dart';
-import '../../extensions.dart';
-import '../../navigation.dart';
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
-import '../../theme.dart';
+import '../../utils/extensions.dart';
+import '../../utils/navigation.dart';
+import '../../utils/theme.dart';
+import '../../utils/validators.dart';
 import '../main_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   bool userVerify = false;
   bool inProgress = false;
+  bool isValidate = false;
 
   void updateUi() {
     setState(() {
@@ -47,8 +49,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     Keyboard.hide();
 
     if (!formKey.currentState!.validate()) {
+      isValidate = true;
       return;
     }
+
     final scope = ProviderScope.containerOf(context, listen: false);
     final apiClient = scope.read(apiClientProvider);
 
@@ -72,12 +76,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         address: address,
       );
       await authController.onSignedIn(response);
-      if(mounted){
+      if (mounted) {
         navigateAndRome<Widget>(context, const MainScreen());
       }
     } catch (e) {
-      if(mounted){
-        showErrorSnackBar('Nasazlyk yuze cykdy');
+      if (mounted) {
+        showErrorSnackBar(context.l10n.hasErrorPleaseReaped);
       }
     }
     inProgress = false;
@@ -86,9 +90,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Registrasiya'),
+        title: Text(l10n.registration),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new),
@@ -106,27 +111,34 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             children: [
               FieldText(
                 controller: usernameController,
-                hintText: 'Ady we Familiyasy',
+                hintText: l10n.fio,
+                validator: (value) => Validator.emptyField(context, value),
               ),
               const SizedBox(height: 18),
               FieldText(
                 controller: emailController,
-                hintText: 'Email (Hokman dal)',
+                hintText: l10n.emailHint,
               ),
               const SizedBox(height: 18),
               FieldText(
+                validator: (value) => Validator.phoneValidator(context, value),
+                prefixIcon: '+993',
+                hintText: '61233377',
                 controller: phoneController,
-                hintText: '+993 65112233',
+                keyboardType: TextInputType.phone,
+                inputFormatters: [LengthLimitingTextInputFormatter(8)],
               ),
               const SizedBox(height: 18),
               FieldText(
                 controller: passwordController,
-                hintText: 'Acar sozi',
+                hintText: l10n.password,
+                validator: (value) => Validator.emptyField(context, value),
               ),
               const SizedBox(height: 18),
               FieldText(
                 controller: addressController,
-                hintText: 'Salgy',
+                hintText: l10n.address,
+                validator: (value) => Validator.emptyField(context, value),
               ),
               const SizedBox(height: 18),
               Consumer(
@@ -136,7 +148,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   return DropDownMenu<RegionResults?>(
                     value: selectedRegion,
                     values: results,
-                    hint: 'Select City',
+                    hint: l10n.chooseRegion,
+                    borderColor: selectedRegion == null && isValidate
+                        ? AppColors.redColor
+                        : AppColors.whiteColor,
+                    validator: (v) => v == null ? context.l10n.chooseRegion : null,
                     items: results?.map((e) {
                       return e.name ?? '-';
                     }).toList(),
@@ -144,9 +160,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ?.map(
                           (e) => DropdownMenuItem<RegionResults?>(
                             value: e,
-                            child: Text(
-                              e.name,
-                            ),
+                            child: Text(e.name),
                           ),
                         )
                         .toList(),
@@ -154,6 +168,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       if (val != null) {
                         selectedRegion = val;
                         ref.read(regionsCityProvider(selectedRegion!.name));
+                        selectedCity = null;
                         updateUi();
                       }
                     },
@@ -163,13 +178,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 18),
               Consumer(
                 builder: (context, ref, child) {
-                  final regionsCity = ref.watch(regionsCityProvider(selectedRegion?.name ?? '-'));
+                  final regionsCity = ref.watch(
+                    regionsCityProvider(selectedRegion?.name ?? '-'),
+                  );
                   final results = regionsCity.asData?.value.results;
                   return DropDownMenu<RegionResults?>(
                     value: selectedCity,
                     values: results,
                     isLoading: regionsCity.isLoading,
-                    hint: 'Select City',
+                    hint: l10n.chooseCity,
+                    borderColor: selectedCity == null && isValidate
+                        ? AppColors.redColor
+                        : AppColors.whiteColor,
+                    validator: (v) => v == null ? context.l10n.chooseRegion : null,
                     items: results?.map((e) {
                       return e.name ?? '-';
                     }).toList(),
@@ -177,15 +198,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ?.map(
                           (e) => DropdownMenuItem<RegionResults?>(
                             value: e,
-                            child: Text(
-                              e.name,
-                            ),
+                            child: Text(e.name),
                           ),
                         )
                         .toList(),
                     onChanged: (val) {
                       if (val != null) {
                         selectedCity = val;
+                        updateUi();
                       }
                     },
                   );
@@ -195,13 +215,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               Row(
                 children: [
                   Checkbox(
-                    activeColor: Colors.transparent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    side: MaterialStateBorderSide.resolveWith(
-                      (states) => const BorderSide(color: AppColors.whiteColor),
-                    ),
                     value: userVerify,
                     onChanged: (val) {
                       userVerify = val!;
@@ -213,24 +226,30 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       userVerify = !userVerify;
                       updateUi();
                     },
-                    child: const Text(
-                      'Okadym we ylalasyan',
-                      style: TextStyle(color: AppColors.whiteColor),
+                    child: Text(
+                      l10n.readAndConfirm,
+                      style: const TextStyle(color: AppColors.whiteColor),
                     ),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: const Text(
-                      'Ulanyjy ylalasygy',
+                    child: Text(
+                      l10n.userConfirm,
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: onSignUpTap,
-                style: AppThemes.darkTheme.elevatedButtonTheme.style,
-                child: const Text('Hasap as'),
+                onPressed: userVerify || inProgress ? onSignUpTap : null,
+                style: AppThemes.darkTheme.elevatedButtonTheme.style?.copyWith(
+                  backgroundColor:
+                      userVerify ? null : const MaterialStatePropertyAll(AppColors.greyColor),
+                ),
+                child: Text(
+                  l10n.signUp,
+                  style: AppThemes.darkTheme.textTheme.displayLarge,
+                ),
               ),
             ],
           ),
@@ -239,5 +258,3 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 }
-
-class City {}

@@ -79,8 +79,12 @@
   "orderChanged": "Sargyt üýtgedildi",
   "commentOfDriver": "Sürüji sebäp ýazmaly",
   "rejected": "Gaýtaryldy",
-  "delivered": "Tamamlandy",
-
+  "delivered": "Gowşuryldy",
+  "created": "Döredildi",
+  "called": "Jaň edildi",
+  "confirmed": "Tassyklandy",
+  "accepted": "Kabul edildi",
+  "completed": "Tamamlandy",
 
   "januaryShort": "Ýan.",
   "februaryShort": "Few.",
