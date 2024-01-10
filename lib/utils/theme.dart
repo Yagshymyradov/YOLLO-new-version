@@ -31,6 +31,9 @@ class AppThemes {
         fontWeight: FontWeight.w700,
       ),
     ),
+    iconTheme: const IconThemeData(
+      color: AppColors.whiteColor,
+    ),
     checkboxTheme: CheckboxThemeData(
       checkColor: const MaterialStatePropertyAll(AppColors.whiteColor),
       fillColor: const MaterialStatePropertyAll(Colors.transparent),

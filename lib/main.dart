@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'data/service/preferences.dart';
 import 'l10n/l10n.dart' as l10n;
@@ -28,15 +29,19 @@ void main() async {
   );
 }
 
-class YolloApp extends StatelessWidget {
+class YolloApp extends ConsumerWidget {
   const YolloApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+  final appLocale = ref.watch(settingsControllerProvider.select((s) => s.locale));
+  l10n.forcedAppLocale = appLocale;
+  Intl.defaultLocale = appLocale.languageCode;
+
     return MaterialApp(
       supportedLocales: l10n.AppLocalizations.supportedLocales,
       localizationsDelegates: l10n.AppLocalizationsX.localizationsDelegates,
-      locale: const Locale('tk'),
+      locale: appLocale,
       debugShowCheckedModeBanner: false,
       theme: AppThemes.darkTheme,
       navigatorKey: nav.rootNavigatorKey,

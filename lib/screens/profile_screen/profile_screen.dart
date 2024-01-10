@@ -2,21 +2,23 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:yollo/screens/profile_screen/widgets/language_change_widget.dart';
 
+import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../utils/assets.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
 import '../authorization/authorization_screen.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool inProgress = false;
 
   void updateUi() {
@@ -49,9 +51,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(authControllerProvider);
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(l10n.profile),
         bottom: const PreferredSize(
           preferredSize: Size(double.infinity, 20),
           child: Divider(
@@ -64,31 +68,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           AppIcons.person.svgPicture(),
           const SizedBox(height: 16),
-          const Center(
+          Center(
             child: Text(
-              'Plany Planyyew',
-              style: TextStyle(
+              user?.username ?? '',
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w500,
               ),
             ),
           ),
           const SizedBox(height: 10),
-          const Center(
+          Center(
             child: Text(
-              '+99365112233',
-              style: TextStyle(
+              '+993${user?.phone}',
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w100,
               ),
             ),
           ),
           const SizedBox(height: 10),
+          const LanguageChangeWidget(),
           ListTile(
             leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            title: Text(
+              l10n.changeLanguage,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
