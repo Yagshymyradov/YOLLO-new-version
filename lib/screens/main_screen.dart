@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
 import '../utils/assets.dart';
 import '../utils/navigation.dart';
 import '../utils/theme.dart';
 import '../widgets/tabbed_navigator.dart';
 import 'follow_order_screen/follow_order_screen.dart';
 import 'home_screen/home_screen.dart';
+import 'news_screen/news_screen.dart';
 import 'profile_screen/profile_screen.dart';
 
 enum TabItem {
@@ -115,7 +115,7 @@ class _MainScreenState extends State<MainScreen> {
         child = const FollowOrderScreen();
         break;
       case TabItem.news:
-        child = Container();
+        child = const NewsScreen();
         break;
       case TabItem.profile:
         child = const ProfileScreen();

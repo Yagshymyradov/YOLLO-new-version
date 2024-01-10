@@ -308,3 +308,37 @@ class CreateOrderBox {
 
   Map<String, dynamic> toJson() => _$CreateOrderBoxToJson(this);
 }
+
+@JsonSerializable()
+class NewsResponse {
+  final List<Notifications>? notifications;
+
+  NewsResponse({required this.notifications});
+
+  factory NewsResponse.fromJson(Map<String, dynamic> json) => _$NewsResponseFromJson(json);
+
+}
+
+@JsonSerializable()
+class Notifications {
+  final int id;
+  @JsonKey(name: 'inputdate')
+  final DateTime inputDate;
+  final String theme;
+  @JsonKey(name: 'maintxt')
+  final String mainTxt;
+  final bool published;
+  final String image;
+
+  Notifications({
+    required this.id,
+    required this.inputDate,
+    required this.theme,
+    required this.mainTxt,
+    required this.published,
+    required this.image,
+  });
+
+  factory Notifications.fromJson(Map<String, dynamic> json) => _$NotificationsFromJson(json);
+
+}

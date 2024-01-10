@@ -17,6 +17,8 @@ extension Endpoints on Never {
 
   static const String ordersBox = 'box/boxes';
 
+  static String news(String language) => 'box/notification?lang=$language';
+
   static String ordersBoxById(int id) => 'box/boxes/$id';
 
   static String regionsCity(String hiRegion) => 'box/regionscity?region_hi=$hiRegion';
@@ -122,6 +124,13 @@ class ApiClient {
       Endpoints.ordersBox,
       body: createOrderBox.toJson(),
       mapper: (dynamic data) => CreateOrderBox.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<NewsResponse> getNews(String language) {
+    return _httpClient.get(
+      Endpoints.news(language),
+      mapper: (dynamic data) => NewsResponse.fromJson(data as Map<String, dynamic>),
     );
   }
 }

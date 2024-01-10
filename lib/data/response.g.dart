@@ -175,3 +175,19 @@ const _$CurrencyEnumMap = {
 const _$OrderStatusEnumMap = {
   OrderStatus.call: 'call',
 };
+
+NewsResponse _$NewsResponseFromJson(Map<String, dynamic> json) => NewsResponse(
+      notifications: (json['notifications'] as List<dynamic>?)
+          ?.map((e) => Notifications.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Notifications _$NotificationsFromJson(Map<String, dynamic> json) =>
+    Notifications(
+      id: json['id'] as int,
+      inputDate: DateTime.parse(json['inputdate'] as String),
+      theme: json['theme'] as String,
+      mainTxt: json['maintxt'] as String,
+      published: json['published'] as bool,
+      image: json['image'] as String,
+    );
