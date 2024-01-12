@@ -25,6 +25,7 @@
   "signUp": "Зарегистрироваться",
   "readAndConfirm": "Прочитал и согласен",
   "userConfirm": "Пользовательское Соглашение",
+  "confirmLogout": "Подтвердите выход",
   "addressInPassport": "Адрес (как в паспорте)",
   "carModel": "Тип и номер транспортного средства",
   "acceptedOrder": "Ваш заказ принят",
@@ -85,6 +86,8 @@
   "confirmed": "Подтвержден",
   "accepted": "Принят",
   "completed": "Завершен",
+  "cancel": "Назад",
+  "ok": "Ок",
 
   "januaryShort": "Jan.",
   "februaryShort": "Feb.",

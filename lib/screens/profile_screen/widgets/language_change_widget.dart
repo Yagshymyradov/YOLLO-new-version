@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../l10n/l10n.dart';
 import '../../../providers.dart';
 import '../../../utils/assets.dart';
@@ -30,7 +29,7 @@ class _LanguageChangeWidgetState extends ConsumerState<LanguageChangeWidget> {
       trailing: AppIcons.chevronDown.svgPicture(),
       title: Row(
         children: [
-          const Icon(Icons.outlined_flag_outlined),
+          AppIcons.flag.svgPicture(),
           const SizedBox(width: 41),
           Text(
             l10n.changeLanguage,

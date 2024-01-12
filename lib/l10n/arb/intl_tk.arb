@@ -25,6 +25,7 @@
   "signUp": "Hasap aç",
   "readAndConfirm": "Okadym we ylalaşýan",
   "userConfirm": "Ulanyjy ylalaşygy",
+  "confirmLogout": "Çykmagy tassyklaň",
   "addressInPassport": "Salgy (Passportdaky ýaly)",
   "carModel": "Ulag görnüşi we belgisi",
   "acceptedOrder": "Sargydyňyz kabul edildi",
@@ -85,6 +86,8 @@
   "confirmed": "Tassyklandy",
   "accepted": "Kabul edildi",
   "completed": "Tamamlandy",
+  "cancel": "Yza",
+  "ok": "Ok",
 
   "januaryShort": "Ýan.",
   "februaryShort": "Few.",

@@ -80,10 +80,13 @@ class ApiClient {
     );
   }
 
-  Future<LoginResponse> logOut(String? accessToken) {
+  Future<void> logOut() {
     return _httpClient.post(
       Endpoints.logOut,
-      mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
+      needDecodeBody: false,
+      mapper: (dynamic data) => {
+        //no-op
+      },
     );
   }
 

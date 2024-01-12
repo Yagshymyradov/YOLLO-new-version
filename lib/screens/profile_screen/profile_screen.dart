@@ -1,15 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:yollo/screens/profile_screen/widgets/language_change_widget.dart';
 
+import '../../components/alert_dialog.dart';
 import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../utils/assets.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
-import '../authorization/authorization_screen.dart';
+import '../splash_screen.dart';
+import 'widgets/language_change_widget.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -28,25 +27,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   }
 
   Future<void> onLogOutTap() async {
-    final scope = ProviderScope.containerOf(context, listen: false);
-    final apiClient = scope.read(apiClientProvider);
-    final authController = scope.read(authControllerProvider.notifier);
-    log(authController.authToken.toString());
-    inProgress = true;
-    updateUi();
-    try {
-      await apiClient.logOut(authController.authToken);
-      if (mounted) {
-        log('token deleted');
-        await replaceRootScreen(context, const AuthorizationScreen());
-      }
-    } catch (e) {
-      if (mounted) {
-        showErrorSnackBar(e.toString());
-      }
-    }
-    inProgress = false;
-    updateUi();
+    alertDialog(
+      context,
+      title: context.l10n.confirmLogout,
+      onTap: () async{
+        final apiClient = ref.read(apiClientProvider);
+        final authController = ref.read(authControllerProvider.notifier);
+        inProgress = true;
+        updateUi();
+        try {
+          await apiClient.logOut();
+          await authController.signOut();
+          if (mounted) {
+            // ignore: unawaited_futures
+            replaceRootScreen(context, const SplashScreen());
+          }
+        } catch (e) {
+          if (mounted) {
+            showErrorSnackBar(context.l10n.hasErrorPleaseReaped);
+          }
+        }
+        inProgress = false;
+        updateUi();
+      },
+    );
   }
 
   @override
@@ -90,99 +94,79 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           const SizedBox(height: 10),
           const LanguageChangeWidget(),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
+            leading: AppIcons.profile.svgPicture(),
             title: Text(
-              l10n.changeLanguage,
+              l10n.changeProfile,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
+            trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            leading: AppIcons.policies.svgPicture(),
+            title: Text(
+              l10n.termsAndPolitics,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
+            trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            leading: AppIcons.help.svgPicture(),
+            title: Text(
+              l10n.helpSupport,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
+            trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            leading: AppIcons.help.svgPicture(),
+            title: Text(
+              l10n.callOperator,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
           ),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            leading: AppIcons.tikTok.svgPicture(),
+            title: Text(
+              l10n.siteYollo,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
           ),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            leading: AppIcons.instagram.svgPicture(),
+            title: Text(
+              l10n.siteYollo,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
           ),
           ListTile(
-            leading: const Icon(Icons.outlined_flag_outlined),
-            title: const Text(
-              'Dil uytget',
-              style: TextStyle(
+            onTap: onLogOutTap,
+            leading: AppIcons.logOut.svgPicture(),
+            title: Text(
+              l10n.logOut,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
             ),
-            trailing: AppIcons.chevronDown.svgPicture(),
-          ),
-          Consumer(
-            builder: (context, ref, child) {
-              final apiClient = ref.read(apiClientProvider);
-              final authController = ref.read(authControllerProvider);
-              return ListTile(
-                onTap: onLogOutTap,
-                leading: const Icon(Icons.outlined_flag_outlined),
-                title: const Text(
-                  'Log Out',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                trailing: AppIcons.chevronDown.svgPicture(),
-              );
-            },
+            trailing: AppIcons.arrowRight.svgPicture(),
           ),
         ],
       ),

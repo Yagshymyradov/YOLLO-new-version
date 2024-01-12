@@ -3,6 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 enum AppIcons {
   add('add'),
+  help('help'),
+  instagram('instagram'),
+  logOut('log-out'),
+  policies('policies'),
+  tikTok('tik-tok'),
+  flag('flag'),
   logo('yolloLogo'),
   chevronDown('chevronDown'),
   arrowRight('arrowRight'),

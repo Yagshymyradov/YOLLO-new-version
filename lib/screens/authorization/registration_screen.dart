@@ -231,10 +231,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       style: const TextStyle(color: AppColors.whiteColor),
                     ),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      l10n.userConfirm,
+                  Flexible(
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        l10n.userConfirm,
+                      ),
                     ),
                   ),
                 ],
