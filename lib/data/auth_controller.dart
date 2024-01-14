@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 // ignore: depend_on_referenced_packages
-import 'dart:convert';
 import 'package:state_notifier/state_notifier.dart';
+
 import 'response.dart';
 import 'service/preferences.dart';
 
@@ -10,6 +10,9 @@ class UserState {
   final String phone;
   final String email;
   final int regionId;
+  final String address;
+  final String regionName;
+  final String regionHi;
   final String authToken;
   final String refreshToken;
 
@@ -20,6 +23,9 @@ class UserState {
     required this.regionId,
     required this.authToken,
     required this.refreshToken,
+    required this.address,
+    required this.regionName,
+    required this.regionHi,
   });
 
   UserState copyWith({
@@ -29,12 +35,18 @@ class UserState {
     int? regionId,
     String? authToken,
     String? refreshToken,
+    String? address,
+    String? regionName,
+    String? regionHi,
   }) {
     return UserState(
       username: username ?? this.username,
       phone: phone ?? this.phone,
       email: email ?? this.email,
       regionId: regionId ?? this.regionId,
+      address: address ?? this.address,
+      regionName: regionName ?? this.regionName,
+      regionHi: regionHi ?? this.regionHi,
       authToken: authToken ?? this.authToken,
       refreshToken: refreshToken ?? this.refreshToken,
     );
@@ -46,6 +58,9 @@ class AuthController extends StateNotifier<UserState?> {
   static const _Phone = 'phone';
   static const _Email = 'email';
   static const _RegionId = 'region_id';
+  static const _Address = 'address';
+  static const _RegionName = 'region_name';
+  static const _RegionHi = 'region_hi';
   static const _AuthToken = 'auth_token';
   static const _RefreshToken = 'refresh_token';
 
@@ -63,6 +78,9 @@ class AuthController extends StateNotifier<UserState?> {
     String username = '';
     String phone = '';
     String email = '';
+    String address = '';
+    String regionName = '';
+    String regionHi = '';
     int regionId = 0;
     String? authToken;
     String? refreshToken;
@@ -74,6 +92,9 @@ class AuthController extends StateNotifier<UserState?> {
       phone = service.getString(_Phone) ?? '';
       email = service.getString(_Email) ?? '';
       regionId = service.getInt(_RegionId) ?? 0;
+      address = service.getString(_Address) ?? '';
+      regionName = service.getString(_RegionName) ?? '';
+      regionHi = service.getString(_RegionHi) ?? '';
     } catch (e) {
       //ignored
     }
@@ -86,6 +107,9 @@ class AuthController extends StateNotifier<UserState?> {
         regionId: regionId,
         authToken: authToken,
         refreshToken: refreshToken,
+        address: address,
+        regionName: regionName,
+        regionHi: regionHi,
       );
     }
 
@@ -98,8 +122,11 @@ class AuthController extends StateNotifier<UserState?> {
       phone: response.user.phone,
       email: response.user.email,
       regionId: response.address.regionId,
-      authToken: response.accessToken,
-      refreshToken: response.refreshToken,
+      authToken: response.accessToken ?? '',
+      refreshToken: response.refreshToken ?? '',
+      address: response.address.address,
+      regionName: response.address.regionName,
+      regionHi: response.address.regionHi,
     );
     state = newState;
 
@@ -110,12 +137,15 @@ class AuthController extends StateNotifier<UserState?> {
       await _service.setString(_Phone, newState.phone);
       await _service.setString(_Email, newState.email);
       await _service.setInt(_RegionId, newState.regionId);
+      await _service.setString(_Address, newState.address);
+      await _service.setString(_RegionName, newState.regionName);
+      await _service.setString(_RegionHi, newState.regionHi);
     } catch (e) {
       //ignored
     }
   }
 
-  Future<void> updateAccessToken(String accessToken) async{
+  Future<void> updateAccessToken(String accessToken) async {
     final oldState = state;
     assert(oldState != null);
 
@@ -143,21 +173,23 @@ class AuthController extends StateNotifier<UserState?> {
     }
 
     final newState = oldState.copyWith(
-      username: response.user.username,
+      username: response.user.name,
       phone: response.user.phone,
       email: response.user.email,
       regionId: response.address.regionId,
-      authToken: response.accessToken,
-      refreshToken: response.refreshToken,
+      regionName: response.address.regionName,
+      regionHi: response.address.regionHi,
+      address: response.address.address,
     );
 
     try {
-      /*await*/ _service.setString(_AuthToken, newState.authToken);
-      /*await*/ _service.setString(_RefreshToken, newState.refreshToken);
-      /*await*/ _service.setString(_UserName, newState.username);
-      /*await*/ _service.setString(_Phone, newState.phone);
-      /*await*/ _service.setString(_Email, newState.email);
-      /*await*/ _service.setInt(_RegionId, newState.regionId);
+      _service.setString(_UserName, newState.username);
+      _service.setString(_Phone, newState.phone);
+      _service.setString(_Email, newState.email);
+      _service.setInt(_RegionId, newState.regionId);
+      _service.setString(_Address, newState.address);
+      _service.setString(_RegionName, newState.regionName);
+      _service.setString(_RegionHi, newState.regionHi);
     } catch (e) {
       //ignored
     }
@@ -173,6 +205,9 @@ class AuthController extends StateNotifier<UserState?> {
       await _service.remove(_Phone);
       await _service.remove(_Email);
       await _service.remove(_RegionId);
+      await _service.remove(_Address);
+      await _service.remove(_RegionName);
+      await _service.remove(_RegionHi);
     } catch (e) {
       //ignored
     }

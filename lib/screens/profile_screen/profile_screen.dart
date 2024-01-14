@@ -1,13 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../components/alert_dialog.dart';
+import '../../data/auth_controller.dart';
+import '../../data/service/preferences.dart';
 import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../utils/assets.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
 import '../splash_screen.dart';
+import 'help_support_screen.dart';
+import 'set_profile_screen.dart';
 import 'widgets/language_change_widget.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -26,11 +33,17 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     });
   }
 
+  Future<void> _launchAsInAppWebViewWithCustomHeaders(Uri url) async {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   Future<void> onLogOutTap() async {
     alertDialog(
       context,
       title: context.l10n.confirmLogout,
-      onTap: () async{
+      onTap: () async {
         final apiClient = ref.read(apiClientProvider);
         final authController = ref.read(authControllerProvider.notifier);
         inProgress = true;
@@ -75,32 +88,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           Center(
             child: Text(
               user?.username ?? '',
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppThemes.darkTheme.textTheme.displayLarge?.copyWith(fontSize: 28),
             ),
           ),
           const SizedBox(height: 10),
           Center(
             child: Text(
               '+993${user?.phone}',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w100,
-              ),
+              style:
+                  AppThemes.darkTheme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w100),
             ),
           ),
           const SizedBox(height: 10),
           const LanguageChangeWidget(),
           ListTile(
+            onTap: () => navigateTo<Widget>(context, const SetProfileScreen()),
             leading: AppIcons.profile.svgPicture(),
             title: Text(
               l10n.changeProfile,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
             trailing: AppIcons.arrowRight.svgPicture(),
           ),
@@ -108,21 +114,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             leading: AppIcons.policies.svgPicture(),
             title: Text(
               l10n.termsAndPolitics,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
             trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
+            onTap: ()=> navigateTo<Widget>(context, const HelpSupportScreen()),
             leading: AppIcons.help.svgPicture(),
             title: Text(
               l10n.helpSupport,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
             trailing: AppIcons.arrowRight.svgPicture(),
           ),
@@ -130,30 +131,27 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             leading: AppIcons.help.svgPicture(),
             title: Text(
               l10n.callOperator,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
           ),
           ListTile(
+            onTap: () => _launchAsInAppWebViewWithCustomHeaders(
+              Uri.parse('https://www.tiktok.com/@yollo.com.tm?_t=8iJTcdXhgAc&_r=1'),
+            ),
             leading: AppIcons.tikTok.svgPicture(),
             title: Text(
               l10n.siteYollo,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
           ),
           ListTile(
+            onTap: () => _launchAsInAppWebViewWithCustomHeaders(
+              Uri.parse('https://www.instagram.com/yollo.com.tm?igshid=NGVhN2U2NjQ0Yg=='),
+            ),
             leading: AppIcons.instagram.svgPicture(),
             title: Text(
               l10n.siteYollo,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
           ),
           ListTile(
@@ -161,10 +159,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             leading: AppIcons.logOut.svgPicture(),
             title: Text(
               l10n.logOut,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppThemes.darkTheme.textTheme.bodyMedium,
             ),
             trailing: AppIcons.arrowRight.svgPicture(),
           ),

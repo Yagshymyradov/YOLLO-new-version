@@ -1,7 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../components/drop_down_menu.dart';
 import '../../components/field_text.dart';
 import '../../data/response.dart';
@@ -11,16 +11,15 @@ import '../../utils/extensions.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
 import '../../utils/validators.dart';
-import '../main_screen.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+class SetProfileScreen extends StatefulWidget {
+  const SetProfileScreen({super.key});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<SetProfileScreen> createState() => _SetProfileScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _SetProfileScreenState extends State<SetProfileScreen> {
   final formKey = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
@@ -35,7 +34,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   RegionResults? selectedRegion;
   RegionResults? selectedCity;
 
-  bool userVerify = false;
   bool inProgress = false;
   bool isValidate = false;
 
@@ -45,7 +43,24 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
   }
 
-  Future<void> onSignUpTap() async {
+  void initialValues() {
+    final scope = ProviderScope.containerOf(context, listen: false);
+    final authController = scope.read(authControllerProvider);
+
+    usernameController.text = authController?.username ?? '';
+    emailController.text = authController?.email ?? '';
+    phoneController.text = authController?.phone ?? '';
+    addressController.text = authController?.address ?? '';
+    selectedRegion = regions?.firstWhere((el) {
+      log(el.hiRegion);
+      return el.hiRegion == authController?.regionHi;
+    });
+    if(city?.isNotEmpty ?? false){
+      selectedCity = city?.firstWhere((el) => el.id == authController?.regionId);
+    }
+  }
+
+  Future<void> onUpdateProfileButtonTap() async {
     Keyboard.hide();
 
     if (!formKey.currentState!.validate()) {
@@ -55,34 +70,36 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     final scope = ProviderScope.containerOf(context, listen: false);
     final apiClient = scope.read(apiClientProvider);
+    final authController = scope.read(authControllerProvider.notifier);
 
     final name = usernameController.text.trim();
     final email = emailController.text.trim();
     final phone = phoneController.text.trim();
     final password = passwordController.text.trim();
     final address = addressController.text.trim();
-    final authController = scope.read(authControllerProvider.notifier);
 
     inProgress = true;
     updateUi();
 
     try {
-      final response = await apiClient.signUp(
+      final response = await apiClient.updateUser(
         password: password,
         name: name,
         email: email,
         phone: phone,
-        regionHi: selectedRegion!.id,
-        regionCity: selectedCity!.id,
+        regionId: selectedRegion!.id,
         address: address,
       );
-      await authController.onSignedIn(response);
+
+      authController.updateUser(response);
+
+      log(response.user.name);
       if (mounted) {
-        navigateAndRome<Widget>(context, const MainScreen());
+        showSnackBar('success', backgroundColor: AppColors.greenColor);
       }
     } catch (e) {
       if (mounted) {
-        showErrorSnackBar(context.l10n.hasErrorPleaseReaped);
+        showSnackBar(context.l10n.hasErrorPleaseReaped);
       }
     }
     inProgress = false;
@@ -90,18 +107,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   @override
+  void initState() {
+    initialValues();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.registration),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
+        title: Text(l10n.changeProfile),
         bottom: const PreferredSize(
           preferredSize: Size(double.infinity, 20),
-          child: Divider(color: AppColors.greyColor),
+          child: Divider(
+            color: AppColors.greyColor,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -122,7 +147,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               const SizedBox(height: 18),
               FieldText(
-                //TODO CHANGE AFTER TESTING
+                //TODO CHANGE IT AFTER TESTING
                 // validator: (value) => Validator.phoneValidator(context, value),
                 prefixIcon: '+993',
                 hintText: '61233377',
@@ -134,7 +159,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               FieldText(
                 controller: passwordController,
                 hintText: l10n.password,
-                validator: (value) => Validator.emptyField(context, value),
               ),
               const SizedBox(height: 18),
               FieldText(
@@ -155,16 +179,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ? AppColors.redColor
                         : AppColors.whiteColor,
                     validator: (v) => v == null ? context.l10n.chooseRegion : null,
-                    items: results?.map((e) {
-                      return e.name ?? '-';
-                    }).toList(),
+                    items: results?.map((e) => e.name ?? '-').toList(),
                     children: results
                         ?.map(
                           (e) => DropdownMenuItem<RegionResults?>(
-                            value: e,
-                            child: Text(e.name),
-                          ),
-                        )
+                        value: e,
+                        child: Text(e.name),
+                      ),
+                    )
                         .toList(),
                     onChanged: (val) {
                       if (val != null) {
@@ -199,10 +221,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     children: results
                         ?.map(
                           (e) => DropdownMenuItem<RegionResults?>(
-                            value: e,
-                            child: Text(e.name),
-                          ),
-                        )
+                        value: e,
+                        child: Text(e.name),
+                      ),
+                    )
                         .toList(),
                     onChanged: (val) {
                       if (val != null) {
@@ -214,44 +236,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 },
               ),
               const SizedBox(height: 44),
-              Row(
-                children: [
-                  Checkbox(
-                    value: userVerify,
-                    onChanged: (val) {
-                      userVerify = val!;
-                      updateUi();
-                    },
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      userVerify = !userVerify;
-                      updateUi();
-                    },
-                    child: Text(
-                      l10n.readAndConfirm,
-                      style: const TextStyle(color: AppColors.whiteColor),
-                    ),
-                  ),
-                  Flexible(
-                    child: TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        l10n.userConfirm,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: userVerify || inProgress ? onSignUpTap : null,
-                style: AppThemes.darkTheme.elevatedButtonTheme.style?.copyWith(
-                  backgroundColor:
-                      userVerify ? null : const MaterialStatePropertyAll(AppColors.greyColor),
-                ),
-                child: Text(
-                  l10n.signUp,
+                onPressed: inProgress ? null : onUpdateProfileButtonTap,
+                child: inProgress ? const CircularProgressIndicator() : Text(
+                  l10n.saveIt,
                   style: AppThemes.darkTheme.textTheme.displayLarge,
                 ),
               ),

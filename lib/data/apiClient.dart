@@ -7,6 +7,8 @@ import 'response.dart';
 extension Endpoints on Never {
   static const String login = 'user/apilogin/';
 
+  static const String updateUser = '/user/userapi/';
+
   static const String logOut = 'user/apilogout/';
 
   static const String refreshToken = 'token/refresh/';
@@ -50,6 +52,7 @@ class ApiClient {
   Future<LoginResponse> signUp({
     required String password,
     required String name,
+    required String email,
     required String phone,
     required int regionHi,
     required int regionCity,
@@ -58,6 +61,7 @@ class ApiClient {
     final postData = <String, dynamic>{
       'password': password,
       'name': name,
+      'email': email,
       'phone': phone,
       'region_hi': regionHi,
       'region_city': regionCity,
@@ -65,6 +69,29 @@ class ApiClient {
     };
     return _httpClient.post(
       Endpoints.createUser,
+      body: postData,
+      mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<LoginResponse> updateUser({
+    required String password,
+    required String name,
+    required String email,
+    required String phone,
+    required int regionId,
+    required String address,
+  }) {
+    final postData = <String, dynamic>{
+      'password': password,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'region_id': regionId,
+      'address': address,
+    };
+    return _httpClient.put(
+      Endpoints.updateUser,
       body: postData,
       mapper: (dynamic data) => LoginResponse.fromJson(data as Map<String, dynamic>),
     );

@@ -27,8 +27,8 @@ class AppThemes {
       ),
       bodyMedium: TextStyle(
         color: AppColors.whiteColor,
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
       ),
     ),
     iconTheme: const IconThemeData(

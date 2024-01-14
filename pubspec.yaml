@@ -28,10 +28,16 @@ dependencies:
   flutter_svg: ^2.0.9
   image_picker: ^1.0.1
   cached_network_image: ^3.3.1
+  url_launcher: ^6.2.3
 
   dropdown_button2: ^2.3.9
 
   cupertino_icons: ^1.0.2
+
+  yollo_chat_ui:
+    git:
+      url: https://github.com/danifdev/Yollo-chat-ui.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

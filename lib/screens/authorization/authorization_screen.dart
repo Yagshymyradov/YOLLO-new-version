@@ -102,7 +102,8 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
               AppIcons.logo.svgPicture(),
               const SizedBox(height: 46),
               FieldText(
-                validator: (value) => Validator.phoneValidator(context, value),
+                //TODO: DON'T FORGOT REPAIR
+                // validator: (value) => Validator.phoneValidator(context, value),
                 prefixIcon: '+993',
                 hintText: '61233377',
                 controller: usernameController,

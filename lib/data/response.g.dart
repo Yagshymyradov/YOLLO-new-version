@@ -8,8 +8,8 @@ part of 'response.dart';
 
 LoginResponse _$LoginResponseFromJson(Map<String, dynamic> json) =>
     LoginResponse(
-      refreshToken: json['refresh'] as String,
-      accessToken: json['access'] as String,
+      refreshToken: json['refresh'] as String?,
+      accessToken: json['access'] as String?,
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       address: Address.fromJson(json['address'] as Map<String, dynamic>),
     );
@@ -48,6 +48,34 @@ RegionResults _$RegionResultsFromJson(Map<String, dynamic> json) =>
       tarif: json['tarif'] as String,
       hiRegion: json['hi_region'] as String,
     );
+
+UpdateProfileUser _$UpdateProfileUserFromJson(Map<String, dynamic> json) =>
+    UpdateProfileUser(
+      email: json['email'] as String?,
+      name: json['name'] as String?,
+      address: json['address'] as String?,
+      regionId: json['region_id'] as int?,
+      phone: json['phone'] as String?,
+      password: json['password'] as String?,
+    );
+
+Map<String, dynamic> _$UpdateProfileUserToJson(UpdateProfileUser instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('email', instance.email);
+  writeNotNull('name', instance.name);
+  writeNotNull('address', instance.address);
+  writeNotNull('region_id', instance.regionId);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('password', instance.password);
+  return val;
+}
 
 OrderDetails _$OrderDetailsFromJson(Map<String, dynamic> json) => OrderDetails(
       box: OrderBox.fromJson(json['box'] as Map<String, dynamic>),

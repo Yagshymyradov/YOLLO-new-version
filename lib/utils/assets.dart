@@ -12,6 +12,7 @@ enum AppIcons {
   logo('yolloLogo'),
   chevronDown('chevronDown'),
   arrowRight('arrowRight'),
+  arrowLeft('arrow-left'),
   truck('truck'),
   person('person'),
   home('home'),

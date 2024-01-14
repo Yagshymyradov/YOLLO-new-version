@@ -17,9 +17,9 @@ DateTime _dateTimeFromJson(String value) => DateTime.parse(value);
 @JsonSerializable()
 class LoginResponse {
   @JsonKey(name: 'refresh')
-  final String refreshToken;
+  final String? refreshToken;
   @JsonKey(name: 'access')
-  final String accessToken;
+  final String? accessToken;
   final User user;
   final Address address;
 
@@ -107,6 +107,27 @@ class RegionResults {
   });
 
   factory RegionResults.fromJson(Map<String, dynamic> json) => _$RegionResultsFromJson(json);
+}
+
+@JsonSerializable(createToJson: true)
+class UpdateProfileUser {
+  final String? email;
+  final String? name;
+  final String? address;
+  final int? regionId;
+  final String? phone;
+  final String? password;
+
+  UpdateProfileUser({
+    required this.email,
+    required this.name,
+    required this.address,
+    required this.regionId,
+    required this.phone,
+    required this.password,
+  });
+
+  factory UpdateProfileUser.fromJson(Map<String, dynamic> json) => _$UpdateProfileUserFromJson(json);
 }
 
 @JsonSerializable()
@@ -341,4 +362,52 @@ class Notifications {
 
   factory Notifications.fromJson(Map<String, dynamic> json) => _$NotificationsFromJson(json);
 
+}
+
+class ChatModel {
+  final List<Feedbacks>? feedbacks;
+
+  ChatModel({required this.feedbacks});
+}
+
+class Feedbacks {
+  final int? id;
+  final DateTime? inputDate;
+  final String? comment;
+  final String? answer;
+  final DateTime? answerDate;
+  final int? user;
+  final int? ansUser;
+  final String? key;
+  final String? ansKey;
+  final String? reSendKey;
+
+  Feedbacks({
+    this.id,
+    this.reSendKey,
+    this.key,
+    this.inputDate,
+    this.comment,
+    this.answer,
+    this.answerDate,
+    this.user,
+    this.ansKey,
+    this.ansUser,
+  });
+}
+
+class SendMessage {
+  final String message;
+
+  SendMessage({required this.message});
+}
+
+class Model {
+  final String name;
+  final String id;
+
+  Model({
+    required this.name,
+    required this.id,
+  });
 }

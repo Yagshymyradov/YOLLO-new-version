@@ -33,10 +33,7 @@ class _LanguageChangeWidgetState extends ConsumerState<LanguageChangeWidget> {
           const SizedBox(width: 41),
           Text(
             l10n.changeLanguage,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppThemes.darkTheme.textTheme.bodyMedium,
           ),
         ],
       ),

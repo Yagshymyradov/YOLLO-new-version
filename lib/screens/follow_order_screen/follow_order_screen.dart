@@ -41,7 +41,7 @@ class _FollowOrderScreenState extends ConsumerState<FollowOrderScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: () async{
-          return ref.invalidate(ordersBoxProvider);
+          return ref.refresh(ordersBoxProvider);
         },
         child: orders.when(
           skipLoadingOnRefresh: false,
