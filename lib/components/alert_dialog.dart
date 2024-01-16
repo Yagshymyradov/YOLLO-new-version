@@ -18,7 +18,7 @@ void alertDialog(
         side: const BorderSide(color: AppColors.buttonColor),
       ),
       backgroundColor: AppColors.backgroundColor,
-      insetPadding: const EdgeInsets.all(20),
+      insetPadding: const EdgeInsets.all(24),
       content: SizedBox(
         width: MediaQuery.sizeOf(context).width - 70,
         child: Text(
@@ -43,7 +43,12 @@ void alertDialog(
             const SizedBox(width: 20),
             Expanded(
               child: ElevatedButton(
-                onPressed: onTap,
+                onPressed: (){
+                  if(onTap != null){
+                    onTap();
+                    Navigator.pop(context);
+                  }
+                },
                 child: Text(
                   l10n.ok,
                   style: AppThemes.darkTheme.textTheme.displayMedium,

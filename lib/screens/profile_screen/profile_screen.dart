@@ -1,12 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../components/alert_dialog.dart';
-import '../../data/auth_controller.dart';
-import '../../data/service/preferences.dart';
 import '../../l10n/l10n.dart';
 import '../../providers.dart';
 import '../../utils/assets.dart';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../components/indicators.dart';
 import '../../components/stepper.dart';
 import '../../data/response.dart';
@@ -20,6 +21,12 @@ class FollowOrderDetails extends ConsumerWidget {
     super.key,
     required this.order,
   });
+
+  Future<void> _launchAsCall(String path) async {
+    if (!await launchUrl(Uri(scheme: 'tel', path: path))) {
+      throw Exception('Could not launch $path');
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -95,7 +102,7 @@ class FollowOrderDetails extends ConsumerWidget {
                     ),
                     const SizedBox(width: 20),
                     Text(
-                      data.box.delivery ?? '',
+                      data.box.tarif?.roundedPrecisionString() ?? '',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
@@ -142,7 +149,7 @@ class FollowOrderDetails extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: ()=> _launchAsCall(data.box.phoneTo ?? ''),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Colors.transparent),
                 shape: MaterialStateProperty.all(

@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../l10n/l10n.dart';
 import '../../utils/assets.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
 import 'create_order.dart';
+import 'create_order_auto.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -24,28 +27,28 @@ class HomeScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.all(35),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'YOLLO',
-                      style: TextStyle(
+                      l10n.yollo,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
-                      'welayatara we Ashgabat shaher ichi eltip bermek hyzmatyny yerine yetiryan hyzmat bolup duryar',
-                      style: TextStyle(
+                      l10n.aboutApp,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
-                      'Ish wagty: 09:00 - 18:00',
-                      style: TextStyle(
+                      l10n.workTime,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                       ),
@@ -54,33 +57,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 76),
-              ListTile(
-                onTap: () {},
-                splashColor: AppColors.buttonColor,
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(color: AppColors.whiteColor),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                title: const Text(
-                  'Sürüjini çagyr',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                subtitle: const Text(
-                  'Sargydy automatik doldur ',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                trailing: AppIcons.truck.svgPicture(height: 54),
-              ),
+              const CreateUserAuto(),
               const SizedBox(height: 19),
               ListTile(
                 onTap: () => navigateTo<Widget>(context, const CreateOrder()),
@@ -89,21 +66,18 @@ class HomeScreen extends StatelessWidget {
                   side: const BorderSide(color: AppColors.whiteColor),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 14,
-                  vertical: 10,
-                ),
-                title: const Text(
-                  'Ýüki Ýollo',
-                  style: TextStyle(
-                    fontSize: 28,
+                contentPadding: const EdgeInsets.all(10),
+                title: Text(
+                  l10n.sendCargo,
+                  style: const TextStyle(
+                    fontSize: 22,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                subtitle: const Text(
-                  'Sargydy elde doldur',
-                  style: TextStyle(
-                    fontSize: 18,
+                subtitle: Text(
+                  l10n.completeOrder,
+                  style: const TextStyle(
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

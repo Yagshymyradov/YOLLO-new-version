@@ -45,18 +45,18 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
 
   void initialValues() {
     final scope = ProviderScope.containerOf(context, listen: false);
-    final authController = scope.read(authControllerProvider);
+    final user = scope.read(authControllerProvider);
 
-    usernameController.text = authController?.username ?? '';
-    emailController.text = authController?.email ?? '';
-    phoneController.text = authController?.phone ?? '';
-    addressController.text = authController?.address ?? '';
+    usernameController.text = user?.username ?? '';
+    emailController.text = user?.email ?? '';
+    phoneController.text = user?.phone ?? '';
+    addressController.text = user?.address ?? '';
     selectedRegion = regions?.firstWhere((el) {
       log(el.hiRegion);
-      return el.hiRegion == authController?.regionHi;
+      return el.hiRegion == user?.regionHi;
     });
     if(city?.isNotEmpty ?? false){
-      selectedCity = city?.firstWhere((el) => el.id == authController?.regionId);
+      selectedCity = city?.firstWhere((el) => el.id == user?.regionId);
     }
   }
 
@@ -93,7 +93,6 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
 
       authController.updateUser(response);
 
-      log(response.user.name);
       if (mounted) {
         showSnackBar('success', backgroundColor: AppColors.greenColor);
       }
@@ -108,8 +107,8 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
 
   @override
   void initState() {
-    initialValues();
     super.initState();
+    initialValues();
   }
 
   @override

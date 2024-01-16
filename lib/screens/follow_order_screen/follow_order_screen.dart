@@ -1,6 +1,8 @@
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../components/indicators.dart';
 import '../../l10n/l10n.dart';
 import '../../providers.dart';
@@ -40,7 +42,7 @@ class _FollowOrderScreenState extends ConsumerState<FollowOrderScreen> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: () async{
+        onRefresh: () async {
           return ref.refresh(ordersBoxProvider);
         },
         child: orders.when(
@@ -53,13 +55,17 @@ class _FollowOrderScreenState extends ConsumerState<FollowOrderScreen> {
               return OrderTile(order: order);
             },
             separatorBuilder: (context, index) {
-              return const Divider(color: AppColors.whiteColor);
+              return const Divider(
+                color: AppColors.whiteColor,
+                height: 30,
+              );
             },
             itemCount: data.boxes.length,
           ),
           error: (error, stack) {
-            log(stack.toString());
-            return NoConnectionIndicator(onRetryTap: ()=> ref.refresh(ordersBoxProvider),);
+            return NoConnectionIndicator(
+              onRetryTap: () => ref.refresh(ordersBoxProvider),
+            );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
         ),

@@ -49,40 +49,37 @@ class _PickPhotoState extends State<PickPhoto> {
       ),
       context: context,
       backgroundColor: const Color.fromRGBO(41, 45, 50, 1),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.only(bottom: 70),
-        child: SizedBox(
-          height: 133,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _pickImage(ImageSource.camera);
-                },
-                child: const Icon(
-                  Icons.photo_camera,
-                  color: Colors.white,
-                  size: 56,
-                ),
+      builder: (context) => SizedBox(
+        height: 133,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            GestureDetector(
+              onTap: () {
+                _pickImage(ImageSource.camera);
+              },
+              child: const Icon(
+                Icons.photo_camera,
+                color: Colors.white,
+                size: 56,
               ),
-              Container(
-                height: double.infinity,
-                width: 4,
-                color: Colors.black,
+            ),
+            Container(
+              height: double.infinity,
+              width: 4,
+              color: Colors.black,
+            ),
+            GestureDetector(
+              onTap: () {
+                _pickImage(ImageSource.gallery);
+              },
+              child: const Icon(
+                Icons.photo_camera_back,
+                color: Colors.white,
+                size: 56,
               ),
-              GestureDetector(
-                onTap: () {
-                  _pickImage(ImageSource.gallery);
-                },
-                child: const Icon(
-                  Icons.photo_camera_back,
-                  color: Colors.white,
-                  size: 56,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

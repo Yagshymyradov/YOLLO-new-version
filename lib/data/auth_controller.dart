@@ -116,7 +116,7 @@ class AuthController extends StateNotifier<UserState?> {
     return null;
   }
 
-  Future<void> onSignedIn(LoginResponse response) async {
+  void onSignedIn(LoginResponse response) {
     final newState = UserState(
       username: response.user.name,
       phone: response.user.phone,
@@ -131,15 +131,15 @@ class AuthController extends StateNotifier<UserState?> {
     state = newState;
 
     try {
-      await _service.setString(_AuthToken, newState.authToken);
-      await _service.setString(_RefreshToken, newState.refreshToken);
-      await _service.setString(_UserName, newState.username);
-      await _service.setString(_Phone, newState.phone);
-      await _service.setString(_Email, newState.email);
-      await _service.setInt(_RegionId, newState.regionId);
-      await _service.setString(_Address, newState.address);
-      await _service.setString(_RegionName, newState.regionName);
-      await _service.setString(_RegionHi, newState.regionHi);
+      _service.setString(_AuthToken, newState.authToken);
+      _service.setString(_RefreshToken, newState.refreshToken);
+      _service.setString(_UserName, newState.username);
+      _service.setString(_Phone, newState.phone);
+      _service.setString(_Email, newState.email);
+      _service.setInt(_RegionId, newState.regionId);
+      _service.setString(_Address, newState.address);
+      _service.setString(_RegionName, newState.regionName);
+      _service.setString(_RegionHi, newState.regionHi);
     } catch (e) {
       //ignored
     }
@@ -156,6 +156,8 @@ class AuthController extends StateNotifier<UserState?> {
     final newState = oldState.copyWith(
       authToken: accessToken,
     );
+
+    state = newState;
 
     try {
       await _service.setString(_AuthToken, newState.authToken);
@@ -181,6 +183,8 @@ class AuthController extends StateNotifier<UserState?> {
       regionHi: response.address.regionHi,
       address: response.address.address,
     );
+
+    state = newState;
 
     try {
       _service.setString(_UserName, newState.username);

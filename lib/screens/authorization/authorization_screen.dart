@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,7 +60,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
         username: username,
         password: password,
       );
-      await authController.onSignedIn(response);
+      authController.onSignedIn(response);
       if (mounted) {
         navigateAndRome<Widget>(context, const MainScreen());
       }
@@ -102,8 +101,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
               AppIcons.logo.svgPicture(),
               const SizedBox(height: 46),
               FieldText(
-                //TODO: DON'T FORGOT REPAIR
-                // validator: (value) => Validator.phoneValidator(context, value),
+                validator: (value) => Validator.phoneValidator(context, value),
                 prefixIcon: '+993',
                 hintText: '61233377',
                 controller: usernameController,

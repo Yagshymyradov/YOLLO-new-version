@@ -76,7 +76,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         regionCity: selectedCity!.id,
         address: address,
       );
-      await authController.onSignedIn(response);
+      authController.onSignedIn(response);
       if (mounted) {
         navigateAndRome<Widget>(context, const MainScreen());
       }
@@ -122,8 +122,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               const SizedBox(height: 18),
               FieldText(
-                //TODO CHANGE AFTER TESTING
-                // validator: (value) => Validator.phoneValidator(context, value),
+                validator: (value) => Validator.phoneValidator(context, value),
                 prefixIcon: '+993',
                 hintText: '61233377',
                 controller: phoneController,
@@ -156,7 +155,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         : AppColors.whiteColor,
                     validator: (v) => v == null ? context.l10n.chooseRegion : null,
                     items: results?.map((e) {
-                      return e.name ?? '-';
+                      return e.name;
                     }).toList(),
                     children: results
                         ?.map(
@@ -194,7 +193,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         : AppColors.whiteColor,
                     validator: (v) => v == null ? context.l10n.chooseRegion : null,
                     items: results?.map((e) {
-                      return e.name ?? '-';
+                      return e.name;
                     }).toList(),
                     children: results
                         ?.map(
