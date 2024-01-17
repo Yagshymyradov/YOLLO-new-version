@@ -136,16 +136,16 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                   style: AppThemes.darkTheme.textTheme.displayLarge,
                 ),
               ),
-              TextButton(
-                onPressed: () => navigateTo<Widget>(
-                  context,
-                  const ForgotPasswordScreen(),
-                ),
-                child: Text(
-                  l10n.forgotPassword,
-                  style: AppThemes.darkTheme.textTheme.displayLarge,
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () => navigateTo<Widget>(
+              //     context,
+              //     const ForgotPasswordScreen(),
+              //   ),
+              //   child: Text(
+              //     l10n.forgotPassword,
+              //     style: AppThemes.darkTheme.textTheme.displayLarge,
+              //   ),
+              // ),
             ],
           ),
         ),

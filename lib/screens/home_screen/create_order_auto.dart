@@ -13,55 +13,6 @@ import '../../utils/theme.dart';
 class CreateUserAuto extends StatelessWidget {
   const CreateUserAuto({super.key});
 
-  Future<void> onCreateOrderButtonTap(BuildContext context) async {
-    final l10n = context.l10n;
-    alertDialog(
-      context,
-      title: l10n.confirmOrder,
-      onTap: () async {
-        final ref = ProviderScope.containerOf(context, listen: false);
-        final apiClient = ref.read(apiClientProvider);
-        final user = ref.read(authControllerProvider);
-        try {
-          await apiClient.createOrderBox(
-            createOrderBox: CreateOrderBox(
-              clientFrom: user?.username ?? '',
-              clientTo: '',
-              phoneFrom: user?.phone ?? '',
-              phoneTo: '',
-              addressFrom: user?.address,
-              addressTo: '',
-              tarif: '0',
-              amount: '0',
-              weight: '0',
-              placeCount: 0,
-              valuta: Currency.tmt,
-              status: OrderStatus.call,
-              comment: '',
-              payment: PaymentMethod.after.asValue(context),
-              regionFrom: user?.regionId.toString(),
-              regionTo: '0',
-              discount: '0',
-              volumeSm: '0',
-              weightMax: '0',
-              minSm: '0',
-              maxSm: '0',
-              delivery: '0',
-            ),
-          );
-          if (context.mounted) {
-            showSnackBar(l10n.orderCreated, backgroundColor: AppColors.greenColor);
-          }
-        } catch (e) {
-          log(e.toString());
-          if (context.mounted) {
-            showSnackBar(l10n.hasErrorPleaseReaped, backgroundColor: AppColors.redColor);
-          }
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -90,4 +41,53 @@ class CreateUserAuto extends StatelessWidget {
       trailing: AppIcons.truck.svgPicture(height: 54),
     );
   }
+}
+
+Future<void> onCreateOrderButtonTap(BuildContext context) async {
+  final l10n = context.l10n;
+  alertDialog(
+    context,
+    title: l10n.confirmOrder,
+    onTap: () async {
+      final ref = ProviderScope.containerOf(context, listen: false);
+      final apiClient = ref.read(apiClientProvider);
+      final user = ref.read(authControllerProvider);
+      try {
+        await apiClient.createOrderBox(
+          createOrderBox: CreateOrderBox(
+            clientFrom: user?.username ?? '',
+            clientTo: '',
+            phoneFrom: user?.phone ?? '',
+            phoneTo: '',
+            addressFrom: user?.address,
+            addressTo: '',
+            tarif: '0',
+            amount: '0',
+            weight: '0',
+            placeCount: 0,
+            valuta: Currency.tmt,
+            status: OrderStatus.call,
+            comment: '',
+            payment: PaymentMethod.after.asValue(context),
+            regionFrom: user?.regionId.toString(),
+            regionTo: '0',
+            discount: '0',
+            volumeSm: '0',
+            weightMax: '0',
+            minSm: '0',
+            maxSm: '0',
+            delivery: '0',
+          ),
+        );
+        if (context.mounted) {
+          showSnackBar(l10n.orderCreated, backgroundColor: AppColors.greenColor);
+        }
+      } catch (e) {
+        log(e.toString());
+        if (context.mounted) {
+          showSnackBar(l10n.hasErrorPleaseReaped, backgroundColor: AppColors.redColor);
+        }
+      }
+    },
+  );
 }

@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../components/indicators.dart';
+import '../../components/optimized_image.dart';
 import '../../components/stepper.dart';
 import '../../data/response.dart';
 import '../../l10n/l10n.dart';
@@ -30,6 +33,7 @@ class FollowOrderDetails extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final baseUrl = ref.watch(apiBaseUrlProvider);
     final orderById = ref.watch(orderBoxByIdProvider(order?.id ?? 1));
     final l10n = context.l10n;
     return Scaffold(
@@ -45,14 +49,35 @@ class FollowOrderDetails extends ConsumerWidget {
         ),
       ),
       body: orderById.when(
-        data: (data) => ListView(
+        data: (data) {
+          log('$baseUrl${data.box.boxImg}');
+          return ListView(
           padding: const EdgeInsets.all(24),
           children: [
-            Container(
+            OptimizedImage(
+              imageUrl: '$baseUrl${data.box.boxImg}',
               height: 320,
-              decoration: BoxDecoration(
-                color: AppColors.greyColor,
-                borderRadius: BorderRadius.circular(26),
+              fit: BoxFit.cover,
+              placeholderBuilder: (c) {
+                return Container(
+                  height: 320,
+                  decoration: BoxDecoration(
+                    color: AppColors.greyColor,
+                    borderRadius: BorderRadius.circular(26),
+                  ),
+                );
+              },
+              errorBuilder: (e, v, s) => Container(
+                height: 320,
+                decoration: BoxDecoration(
+                  color: AppColors.greyColor,
+                  borderRadius: BorderRadius.circular(26),
+                ),
+                child: const Icon(
+                  Icons.photo_camera,
+                  color: Colors.blue,
+                  size: 270,
+                ),
               ),
             ),
             const SizedBox(height: 14),
@@ -168,7 +193,8 @@ class FollowOrderDetails extends ConsumerWidget {
               ),
             ),
           ],
-        ),
+        );
+        },
         error: (error, stack) => NoConnectionIndicator(
           onRetryTap: () => ref.invalidate(orderBoxByIdProvider),
         ),

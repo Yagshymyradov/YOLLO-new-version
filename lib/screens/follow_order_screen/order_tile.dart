@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../components/optimized_image.dart';
 import '../../data/response.dart';
 import '../../providers.dart';
@@ -12,7 +13,10 @@ import 'follow_order_details.dart';
 class OrderTile extends ConsumerWidget {
   final OrderBox order;
 
-  const OrderTile({super.key, required this.order});
+  const OrderTile({
+    super.key,
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,33 +48,54 @@ class OrderTile extends ConsumerWidget {
           const SizedBox(width: 10),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  '#${order.id}',
-                  style: AppThemes.darkTheme.textTheme.bodyMedium,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '#${order.id}',
+                      style: AppThemes.darkTheme.textTheme.bodyMedium,
+                    ),
+                    Text(
+                      dateTime(order.inputDate!, context),
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.darkGreyColor,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 5),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: order.regionFromName,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w100,
-                        ),
-                      ),
-                      if (order.regionToName != null)
-                        TextSpan(
-                          text: '-${order.regionToName}',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w100,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: order.regionFromName,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w100,
+                            ),
                           ),
-                        ),
-                    ],
-                  ),
+                          if (order.regionToName != null)
+                            TextSpan(
+                              text: '-${order.regionToName}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w100,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: AppIcons.arrowRight.svgPicture(),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 5),
                 Row(
@@ -102,20 +127,6 @@ class OrderTile extends ConsumerWidget {
                 ),
               ],
             ),
-          ),
-          Column(
-            children: [
-              Text(
-                dateTime(order.inputDate!, context),
-                style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.darkGreyColor,
-                ),
-              ),
-              const SizedBox(height: 14),
-              AppIcons.arrowRight.svgPicture(),
-            ],
           ),
         ],
       ),

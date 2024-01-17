@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/indicators.dart';
@@ -8,7 +10,6 @@ import '../../utils/assets.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
 import '../home_screen/create_order_auto.dart';
-import 'all_orders_follow_screen.dart';
 import 'order_tile.dart';
 
 final ordersBoxProvider = FutureProvider((ref) {
@@ -16,8 +17,8 @@ final ordersBoxProvider = FutureProvider((ref) {
   return apiClient.getOrdersBox();
 });
 
-class FollowOrderScreen extends ConsumerWidget {
-  const FollowOrderScreen({super.key});
+class AllOrdersFollowScreen extends ConsumerWidget {
+  const AllOrdersFollowScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,13 +26,9 @@ class FollowOrderScreen extends ConsumerWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 70,
-        leading: TextButton(
-          onPressed: () => navigateTo<Widget>(context, const AllOrdersFollowScreen()),
-          child: Text(
-            l10n.all,
-            style: AppThemes.darkTheme.textTheme.bodyMedium,
-          ),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_ios_new),
         ),
         title: Text(l10n.follow),
         actions: [
@@ -67,7 +64,7 @@ class FollowOrderScreen extends ConsumerWidget {
                 height: 30,
               );
             },
-            itemCount: data.boxes.length > 5 ? 5 : data.boxes.length,
+            itemCount: data.boxes.length,
           ),
           error: (error, stack) {
             return NoConnectionIndicator(
@@ -80,3 +77,4 @@ class FollowOrderScreen extends ConsumerWidget {
     );
   }
 }
+
