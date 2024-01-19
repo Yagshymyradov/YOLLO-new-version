@@ -8,7 +8,7 @@ import '../../utils/assets.dart';
 import '../../utils/navigation.dart';
 import '../../utils/theme.dart';
 import '../splash_screen.dart';
-import 'help_support_screen.dart';
+import 'help_support_screen/help_support_screen.dart';
 import 'set_profile_screen.dart';
 import 'widgets/language_change_widget.dart';
 
@@ -114,7 +114,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
-            onTap: ()=> navigateTo<Widget>(context, const HelpSupportScreen()),
+            onTap: () => navigateTo<Widget>(context, HelpSupportScreen()),
             leading: AppIcons.help.svgPicture(),
             title: Text(
               l10n.helpSupport,

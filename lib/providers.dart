@@ -1,19 +1,22 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'data/apiClient.dart';
 import 'data/auth_controller.dart';
+import 'data/chat_controller.dart';
 import 'data/json_http_client.dart';
 import 'data/service/preferences.dart';
 import 'data/service/settings_controller.dart';
 
 /// It is an error to use this provider without overriding it's value.
 final appPrefsServiceProvider = Provider<AppPrefsService>(
-      (ref) => throw UnimplementedError("Can't use this provider without overriding it's value."),
+  (ref) => throw UnimplementedError("Can't use this provider without overriding it's value."),
 );
 
 final settingsControllerProvider = StateNotifierProvider<SettingsController, AppSettings>(
-      (ref) {
+  (ref) {
     final appPrefs = ref.watch(appPrefsServiceProvider);
     final initialSettings = SettingsController.initialize(appPrefs);
     return SettingsController(appPrefs, initialSettings);
@@ -22,7 +25,7 @@ final settingsControllerProvider = StateNotifierProvider<SettingsController, App
 );
 
 final authControllerProvider = StateNotifierProvider<AuthController, UserState?>(
-      (ref) {
+  (ref) {
     final appPrefs = ref.watch(appPrefsServiceProvider);
     final initialState = AuthController.initialState(appPrefs);
     return AuthController(appPrefs, initialState);
@@ -30,12 +33,19 @@ final authControllerProvider = StateNotifierProvider<AuthController, UserState?>
   dependencies: [appPrefsServiceProvider],
 );
 
+final chatControllerProvider = StateNotifierProvider.autoDispose<ChatController, ChatState?>(
+  (ref) {
+    final apiClient = ref.watch(apiClientProvider);
+    return ChatController(const ChatState(), apiClient);
+  },
+);
+
 final apiBaseUrlProvider = Provider((ref) => 'https://yollo.com.tm/backend/api/');
 
 final baseUrlProvider = Provider((ref) => 'https://yollo.com.tm');
 
 final httpClientProvider = Provider(
-      (ref) {
+  (ref) {
     final httpClient = JsonHttpClient();
 
     /*lateinit*/
@@ -70,10 +80,10 @@ final httpClientProvider = Provider(
                 await authController.updateAccessToken(refreshedToken.access);
 
                 error.requestOptions.headers[HttpHeaders.authorizationHeader] =
-                'Bearer ${refreshedToken.access}';
+                    'Bearer ${refreshedToken.access}';
 
                 final response =
-                await refreshTokenHttpClient!.dio.fetch<dynamic>(error.requestOptions);
+                    await refreshTokenHttpClient!.dio.fetch<dynamic>(error.requestOptions);
                 return handler.resolve(response);
               } catch (e) {
                 //ignored
@@ -82,7 +92,7 @@ final httpClientProvider = Provider(
 
             ref.listen(
               apiBaseUrlProvider,
-                  (previous, next) {
+              (previous, next) {
                 final apiBaseUrl = next;
                 refreshTokenHttpClient!.dio.options.baseUrl = apiBaseUrl;
               },
@@ -97,7 +107,7 @@ final httpClientProvider = Provider(
 
     ref.listen(
       apiBaseUrlProvider,
-          (previous, next) {
+      (previous, next) {
         final apiBaseUrl = next;
         httpClient.dio.options.baseUrl = apiBaseUrl;
       },
@@ -113,7 +123,7 @@ final httpClientProvider = Provider(
 );
 
 final apiClientProvider = Provider(
-      (ref) => ApiClient(ref.watch(httpClientProvider)),
+  (ref) => ApiClient(ref.watch(httpClientProvider)),
   dependencies: [httpClientProvider],
 );
 

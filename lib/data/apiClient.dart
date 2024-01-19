@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'chat_response.dart';
 import 'json_http_client.dart';
 import 'response.dart';
 
@@ -18,6 +19,8 @@ extension Endpoints on Never {
   static const String regionsHi = 'box/regionshi';
 
   static const String ordersBox = 'box/boxes';
+
+  static const String feedBack = 'box/feedback';
 
   static String news(String language) => 'box/notification?lang=$language';
 
@@ -162,5 +165,29 @@ class ApiClient {
       Endpoints.news(language),
       mapper: (dynamic data) => NewsResponse.fromJson(data as Map<String, dynamic>),
     );
+  }
+
+  Future<ChatModel?> getFeedbacks() {
+    return _httpClient.get(
+      Endpoints.feedBack,
+      mapper: (dynamic data) => ChatModel.fromMap(data as Map<String, dynamic>),
+    );
+  }
+
+  Future<bool> sendMessage(SendMessage message) {
+    try{
+      return _httpClient.post(
+        Endpoints.feedBack,
+        body: message.toMap(),
+        mapper: (dynamic data) {
+          if(data != null){
+            return true;
+          }
+          return false;
+        },
+      );
+    } catch(e){
+      rethrow;
+    }
   }
 }

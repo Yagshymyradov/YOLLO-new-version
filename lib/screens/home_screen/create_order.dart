@@ -449,6 +449,7 @@ class _CreateOrderState extends ConsumerState<CreateOrder> {
                       if (val != null) {
                         selectedRecipientRegion = val;
                         ref.read(regionsCityProvider(selectedRecipientRegion!.name));
+                        selectedRecipientCity = null;
                         updateUi();
                       }
                     },
