@@ -86,8 +86,8 @@ class AuthController extends StateNotifier<UserState?> {
     String? refreshToken;
 
     try {
-      authToken = service.getString(_AuthToken);
       refreshToken = service.getString(_RefreshToken);
+      authToken = service.getString(_AuthToken);
       username = service.getString(_UserName) ?? '';
       phone = service.getString(_Phone) ?? '';
       email = service.getString(_Email) ?? '';

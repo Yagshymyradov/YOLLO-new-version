@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 enum AppIcons {
+  phone('phone'),
   add('add'),
   help('help'),
   instagram('instagram'),

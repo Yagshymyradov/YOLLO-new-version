@@ -42,6 +42,7 @@ class YolloApp extends ConsumerWidget {
       supportedLocales: l10n.AppLocalizations.supportedLocales,
       localizationsDelegates: l10n.AppLocalizationsX.localizationsDelegates,
       locale: appLocale,
+      title: 'YOLLO',
       debugShowCheckedModeBanner: false,
       theme: AppThemes.darkTheme,
       navigatorKey: nav.rootNavigatorKey,

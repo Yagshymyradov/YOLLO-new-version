@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/drop_down_menu.dart';
@@ -108,7 +109,10 @@ class _SetProfileScreenState extends State<SetProfileScreen> {
   @override
   void initState() {
     super.initState();
-    initialValues();
+    //TODO: check it
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      initialValues();
+    });
   }
 
   @override

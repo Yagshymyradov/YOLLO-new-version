@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -70,6 +72,8 @@ class FollowOrderScreen extends ConsumerWidget {
             itemCount: data.boxes.length > 5 ? 5 : data.boxes.length,
           ),
           error: (error, stack) {
+            log(error.toString());
+            log(stack.toString());
             return NoConnectionIndicator(
               onRetryTap: () => ref.refresh(ordersBoxProvider),
             );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yollo/utils/theme.dart';
+import 'theme.dart';
 
 /// Root Navigator key
 final rootNavigatorKey = GlobalKey<NavigatorState>();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../components/alert_dialog.dart';
 import '../../l10n/l10n.dart';
 import '../../providers.dart';
@@ -31,6 +32,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   Future<void> _launchAsInAppWebViewWithCustomHeaders(Uri url) async {
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $url');
+    }
+  }
+
+  Future<void> _launchAsCall(String path) async {
+    if (!await launchUrl(Uri(scheme: 'tel', path: path))) {
+      throw Exception('Could not launch $path');
     }
   }
 
@@ -114,7 +121,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
-            onTap: () => navigateTo<Widget>(context, HelpSupportScreen()),
+            onTap: () => navigateTo<Widget>(context, const HelpSupportScreen()),
             leading: AppIcons.help.svgPicture(),
             title: Text(
               l10n.helpSupport,
@@ -123,7 +130,48 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             trailing: AppIcons.arrowRight.svgPicture(),
           ),
           ListTile(
-            leading: AppIcons.help.svgPicture(),
+            onTap: () => showModalBottomSheet<Widget>(
+              backgroundColor: AppColors.backgroundColor,
+              context: context,
+              builder: (context) => Padding(
+                padding: const EdgeInsets.all(20),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 140,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        onTap: () => _launchAsCall('+99361192228'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        tileColor: AppColors.darkColor,
+                        leading: AppIcons.phone.svgPicture(),
+                        title: Text(
+                          '+99361192228',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ListTile(
+                        onTap: () => _launchAsCall('+99363066699'),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        tileColor: AppColors.darkColor,
+                        leading: AppIcons.phone.svgPicture(),
+                        title: Text(
+                          '+99363066699',
+                          style: Theme.of(context).textTheme.displayLarge,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            leading: AppIcons.phone.svgPicture(),
             title: Text(
               l10n.callOperator,
               style: AppThemes.darkTheme.textTheme.bodyMedium,
