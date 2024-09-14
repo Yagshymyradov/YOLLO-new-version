@@ -848,6 +848,14 @@ class MaterialLocalizationTk extends GlobalMaterialLocalizations {
   @override
   // TODO: implement shareButtonLabel
   String get shareButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement clearButtonTooltip
+  String get clearButtonTooltip => throw UnimplementedError();
+
+  @override
+  // TODO: implement selectedDateLabel
+  String get selectedDateLabel => throw UnimplementedError();
 }
 
 /// A custom set of localizations for the 'tk' locale. In this example, only
@@ -1032,4 +1040,8 @@ class CupertinoLocalizationTk extends GlobalCupertinoLocalizations {
   @override
   // TODO: implement shareButtonLabel
   String get shareButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement clearButtonLabel
+  String get clearButtonLabel => throw UnimplementedError();
 }

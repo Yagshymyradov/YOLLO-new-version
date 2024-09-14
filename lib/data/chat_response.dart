@@ -13,10 +13,10 @@ class ChatModel {
     return ChatModel(
       feedbacks: map['feedbacks'] != null
           ? List<Feedbacks>.from(
-        (map['feedbacks'] as List<dynamic>).map<Feedbacks?>(
-              (x) => Feedbacks.fromMap(x as Map<String, dynamic>),
-        ),
-      )
+              (map['feedbacks'] as List<dynamic>).map<Feedbacks?>(
+                (x) => Feedbacks.fromMap(x as Map<String, dynamic>),
+              ),
+            )
           : null,
     );
   }
@@ -56,14 +56,10 @@ class Feedbacks {
   factory Feedbacks.fromMap(Map<String, dynamic> map) {
     return Feedbacks(
       id: map['id'] != null ? map['id'] as int : null,
-      inputDate: map['inputdate'] != null
-          ? DateTime.tryParse(map['inputdate'] as String)
-          : null,
+      inputDate: map['inputdate'] != null ? DateTime.tryParse(map['inputdate'] as String) : null,
       comment: map['comment'] != null ? map['comment'] as String : null,
       answer: map['answer'] != null ? map['answer'] as String : null,
-      answerDate: map['answerdate'] != null
-          ? DateTime.tryParse(map['answerdate'] as String)
-          : null,
+      answerDate: map['answerdate'] != null ? DateTime.tryParse(map['answerdate'] as String) : null,
       user: map['user'] != null ? map['user'] as int : null,
       ansUser: map['ansuser'] != null ? map['ansuser'] as int : null,
       key: UniqueKey().toString(),
@@ -95,6 +91,7 @@ class SendMessage {
 class Model {
   final String name;
   final String id;
+
   Model({
     required this.name,
     required this.id,
@@ -145,10 +142,10 @@ String chatDate(DateTime? time) {
 }
 
 MessageModel toMessage(
-    Feedbacks msg, {
-      Status? status,
-      bool isResend = false,
-    }) {
+  Feedbacks msg, {
+  Status? status,
+  bool isResend = false,
+}) {
   String timeText;
   if (msg.inputDate != null) {
     final dateTime = msg.inputDate;
@@ -160,9 +157,7 @@ MessageModel toMessage(
     updatedAt: msg.id,
     text: msg.comment ?? (msg.answer ?? ''),
     author: toSender(msg.user),
-    id: isResend
-        ? (msg.reSendKey ?? UniqueKey().toString())
-        : msg.key ?? UniqueKey().toString(),
+    id: isResend ? (msg.reSendKey ?? UniqueKey().toString()) : msg.key ?? UniqueKey().toString(),
     showStatus: true,
     isOwner: msg.comment != null || msg.comment != "",
     createdAt: msg.inputDate == null
@@ -177,10 +172,10 @@ MessageModel toMessage(
 }
 
 MessageModel toComment(
-    Feedbacks msg, {
-      Status? status,
-      bool isResend = false,
-    }) {
+  Feedbacks msg, {
+  Status? status,
+  bool isResend = false,
+}) {
   String timeText;
   if (msg.inputDate != null) {
     final dateTime = msg.inputDate;
@@ -192,9 +187,7 @@ MessageModel toComment(
     updatedAt: msg.id,
     text: msg.comment ?? '',
     author: toSender(msg.user),
-    id: isResend
-        ? (msg.reSendKey ?? UniqueKey().toString())
-        : msg.key ?? UniqueKey().toString(),
+    id: isResend ? (msg.reSendKey ?? UniqueKey().toString()) : msg.key ?? UniqueKey().toString(),
     showStatus: true,
     isOwner: true,
     createdAt: msg.inputDate == null
@@ -209,10 +202,10 @@ MessageModel toComment(
 }
 
 MessageModel toAnswer(
-    Feedbacks msg, {
-      Status? status,
-      bool isResend = false,
-    }) {
+  Feedbacks msg, {
+  Status? status,
+  bool isResend = false,
+}) {
   String timeText;
   if (msg.inputDate != null) {
     final dateTime = msg.inputDate;

@@ -178,37 +178,37 @@ class ChatController extends StateNotifier<ChatState?> {
     }
   }
 
-  Future<void> onReSendMessage({required Feedbacks body}) async{
+  Future<void> onReSendMessage({required Feedbacks body}) async {
     try {
-        onSyncMessagesWithoutLocaleMessage(
-          message: body,
-          status: Status.sending,
-          isResend: true,
-          isReAdd: false,
+      onSyncMessagesWithoutLocaleMessage(
+        message: body,
+        status: Status.sending,
+        isResend: true,
+        isReAdd: false,
       );
       final message = SendMessage(message: body.comment!);
       final res = await apiClient.sendMessage(message);
       if (res) {
         onSyncMessagesWithoutLocaleMessage(
-            message: body,
-            status: Status.sending,
-            isResend: false,
-            isReAdd: true,
+          message: body,
+          status: Status.sending,
+          isResend: false,
+          isReAdd: true,
         );
       } else {
-          onSyncMessagesWithoutLocaleMessage(
-            message: body,
-            status: Status.error,
-            isResend: false,
-            isReAdd: true,
-        );
-      }
-    } catch (ex) {
         onSyncMessagesWithoutLocaleMessage(
           message: body,
           status: Status.error,
           isResend: false,
           isReAdd: true,
+        );
+      }
+    } catch (ex) {
+      onSyncMessagesWithoutLocaleMessage(
+        message: body,
+        status: Status.error,
+        isResend: false,
+        isReAdd: true,
       );
       rethrow;
     }

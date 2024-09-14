@@ -13,7 +13,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  intl: ^0.18.1
+  intl: ^0.19.0
 
   riverpod: ^2.4.5
   flutter_riverpod: ^2.4.5
@@ -36,7 +36,8 @@ dependencies:
 
   yollo_chat_ui:
     git:
-      url: https://github.com/danifdev/Yollo-chat-ui.git
+#      url: https://github.com/danifdev/Yollo-chat-ui.git
+      url: git@github.com:Yagshymyradov/chat-ui.git
       ref: main
 
 dev_dependencies:
